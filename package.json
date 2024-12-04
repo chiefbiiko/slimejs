@@ -5,12 +5,17 @@
     "main": "src/index.js",
     "author": "",
     "license": "MIT",
+    "type": "module",
     "scripts": {
-        "test": "mocha test.js",
+        "test": "hardhat test",
         "fmt": "npx --yes prettier --no-semi --arrow-parens avoid --trailing-comma none --print-width 80 --write '{,!(node_modules)/**/}*.js'"
     },
     "devDependencies": {
-        "chai": "4.3.7",
-        "mocha": "10.2.0"
+        "chai": "5.1.2",
+        "mocha": "11.0.1",
+        "hardhat": "2.22.17",
+        "circomlibjs": "0.1.7",
+        "@nomiclabs/hardhat-ethers": "2.0.2",
+        "@nomiclabs/hardhat-waffle": "2.0.1"
     }
 }
