@@ -1,0 +1,16 @@
+{
+    "name": "bropro",
+    "version": "0.0.0",
+    "description": "Browser-based ZK proving à la circomlibjs snarkjs",
+    "main": "src/index.js",
+    "author": "",
+    "license": "MIT",
+    "scripts": {
+        "test": "mocha test.js",
+        "fmt": "npx --yes prettier --no-semi --arrow-parens avoid --trailing-comma none --print-width 80 --write '{,!(node_modules)/**/}*.js'"
+    },
+    "devDependencies": {
+        "chai": "4.3.7",
+        "mocha": "10.2.0"
+    }
+}
