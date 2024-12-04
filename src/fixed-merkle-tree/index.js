@@ -1,5 +1,5 @@
-import defaultHash from './simpleHash'
-import BaseTree from './base'
+import defaultHash from './simpleHash.js'
+import BaseTree from './base.js'
 
 export default class MerkleTree extends BaseTree {
   constructor(levels, elements = [], {

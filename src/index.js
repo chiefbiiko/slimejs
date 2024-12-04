@@ -1,5 +1,5 @@
-import MerkleTree from "./fixed-merkle-tree"
-import { stringifyBigInts } from "./utils"
+import MerkleTree from "./fixed-merkle-tree/index.js"
+import { stringifyBigInts } from "./utils.js"
 
 export {
     MerkleTree,

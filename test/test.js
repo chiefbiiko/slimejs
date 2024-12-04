@@ -1,19 +1,25 @@
 // const { expect } = require('chai')
 
-const { ethers, waffle } = require('hardhat')
+// const { ethers, waffle } = require('hardhat')
+// import { ethers, waffle } from 'hardhat'
+import hardhat from 'hardhat'
+const { ethers, waffle } = hardhat
 // const { expect } = require('chai')
+import { expect } from "chai";
 
-const {MerkleTree} = require('../src')
+// const {MerkleTree} = require('../src')
+import { MerkleTree } from '../src/index.js';
 // const { utils } = require('../sdk')()
 // const { poseidonHash2, bigNumToHex } = utils
 // const { merkleTreeHeight } = require('./utils')
-const { BigNumber } = require('@ethersproject/bignumber')
+// const { BigNumber } = require('@ethersproject/bignumber')
+import { BigNumber } from '@ethersproject/bignumber';
 
-require('./compileHasher.cjs')
+// require('./compileHasher.cjs')
+import('./compileHasher.cjs')
 
 const merkleTreeHeight = 5
 
-let expect = null
 // let poseidonHash2
 
 function hex(num, len = 32) {
