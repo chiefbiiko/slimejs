@@ -20,7 +20,7 @@ import('./compileHasher.cjs')
 
 const merkleTreeHeight = 5
 
-// let poseidonHash2
+let poseidonHash2
 
 function hex(num, len = 32) {
   return num.toString(16).padStart(len * 2, '0')
@@ -61,18 +61,18 @@ describe('fixed-merkle-tree', function () {
     //TODO use custom circomlibjs once ready
     const { buildPoseidon } = await import('circomlibjs')
     const poseidon = await buildPoseidon()
-    function poseidonHash2(a, b) {
+    function _poseidonHash2(a, b) {
       BigNumber.from(poseidon.F.toString(poseidon([a, b]), 10))
     }
-    // poseidonHash2 = _poseidonHash2
+    poseidonHash2 = _poseidonHash2
     // bigNumToHex = sdk.utils.bigNumToHex
     //
-    return { hasher, merkleTreeWithHistory, poseidonHash2 }
+    return { hasher, merkleTreeWithHistory/*, poseidonHash2 */}
   }
 
   describe('#constructor', () => {
     it('should correctly hash 2 leaves', async () => {
-      const { merkleTreeWithHistory, poseidonHash2 } = await waffle.loadFixture(fixture)
+      const { merkleTreeWithHistory/*, poseidonHash2*/ } = await waffle.loadFixture(fixture)
       const hash0 = await merkleTreeWithHistory.hashLeftRight(
         hex(123),
         hex(456)
@@ -83,7 +83,7 @@ describe('fixed-merkle-tree', function () {
 
     it('should initialize', async () => {
       const { merkleTreeWithHistory } = await waffle.loadFixture(fixture)
-      const zeroValue = await merkleTreeWithHistory.ZERO_VALUE()
+      const zeroValue = await merkleTreeWithHistory.ZERO_VALUE().then(r => r.toHexString())
       const firstSubtree = await merkleTreeWithHistory.filledSubtrees(0)
       const firstZero = await merkleTreeWithHistory.zeros(0)
       expect(firstSubtree).to.be.equal(zeroValue)

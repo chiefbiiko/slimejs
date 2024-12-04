@@ -35,7 +35,13 @@ const config = {
   },
   mocha: {
     timeout: 600000000
-  }
+  },
+  paths: {
+    sources: "./test",
+    tests: "./test",
+    cache: "./cache",
+    artifacts: "./artifacts"
+  },
 }
 
 module.exports = config
