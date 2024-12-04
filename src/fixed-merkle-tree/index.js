@@ -1,15 +1,16 @@
-import defaultHash from './simpleHash.js'
-import BaseTree from './base.js'
+import defaultHash from "./simpleHash.js"
+import BaseTree from "./base.js"
 
 export default class MerkleTree extends BaseTree {
-  constructor(levels, elements = [], {
-    hashFunction = defaultHash,
-    zeroElement = 0,
-  } = {}) {
+  constructor(
+    levels,
+    elements = [],
+    { hashFunction = defaultHash, zeroElement = 0 } = {}
+  ) {
     super()
     this.levels = levels
     if (elements.length > this.capacity) {
-      throw new Error('Tree is full')
+      throw new Error("Tree is full")
     }
     this._hashFn = hashFunction
     this.zeroElement = zeroElement
@@ -27,7 +28,6 @@ export default class MerkleTree extends BaseTree {
     }
   }
 
-
   /**
    * Insert multiple elements into the tree.
    * @param {Array} elements Elements to insert
@@ -38,7 +38,7 @@ export default class MerkleTree extends BaseTree {
     }
 
     if (this._layers[0].length + elements.length > this.capacity) {
-      throw new Error('Tree is full')
+      throw new Error("Tree is full")
     }
     // First we insert all elements except the last one
     // updating only full subtree hashes (all layers where inserted element has odd index)
@@ -52,7 +52,7 @@ export default class MerkleTree extends BaseTree {
         index >>= 1
         this._layers[level][index] = this._hashFn(
           this._layers[level - 1][index * 2],
-          this._layers[level - 1][index * 2 + 1],
+          this._layers[level - 1][index * 2 + 1]
         )
       }
     }
@@ -71,10 +71,15 @@ export default class MerkleTree extends BaseTree {
   getTreeEdge(edgeIndex) {
     const edgeElement = this._layers[0][edgeIndex]
     if (edgeElement === undefined) {
-      throw new Error('Element not found')
+      throw new Error("Element not found")
     }
     const edgePath = this.path(edgeIndex)
-    return { edgePath, edgeElement, edgeIndex, edgeElementsCount: this._layers[0].length }
+    return {
+      edgePath,
+      edgeElement,
+      edgeIndex,
+      edgeElementsCount: this._layers[0].length
+    }
   }
 
   /**
@@ -89,7 +94,10 @@ export default class MerkleTree extends BaseTree {
     for (let i = 0; i < length; i += size) {
       const edgeLeft = i
       const edgeRight = i + size
-      slices.push({ edge: this.getTreeEdge(edgeLeft), elements: this.elements.slice(edgeLeft, edgeRight) })
+      slices.push({
+        edge: this.getTreeEdge(edgeLeft),
+        elements: this.elements.slice(edgeLeft, edgeRight)
+      })
     }
     return slices
   }
@@ -103,7 +111,7 @@ export default class MerkleTree extends BaseTree {
     return {
       levels: this.levels,
       _zeros: this._zeros,
-      _layers: this._layers,
+      _layers: this._layers
     }
   }
 

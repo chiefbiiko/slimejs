@@ -35,7 +35,7 @@ export default class BaseTree {
    */
   static indexOf(elements, element, fromIndex, comparator) {
     if (comparator) {
-      return elements.findIndex((el) => comparator(element, el))
+      return elements.findIndex(el => comparator(element, el))
     } else {
       return elements.indexOf(element, fromIndex)
     }
@@ -47,7 +47,7 @@ export default class BaseTree {
    */
   insert(element) {
     if (this._layers[0].length >= this.capacity) {
-      throw new Error('Tree is full')
+      throw new Error("Tree is full")
     }
     this.update(this._layers[0].length, element)
   }
@@ -62,7 +62,7 @@ export default class BaseTree {
     }
 
     if (this._layers[0].length + elements.length > this.capacity) {
-      throw new Error('Tree is full')
+      throw new Error("Tree is full")
     }
     // First we insert all elements except the last one
     // updating only full subtree hashes (all layers where inserted element has odd index)
@@ -82,15 +82,19 @@ export default class BaseTree {
     this.insert(elements[elements.length - 1])
   }
 
-
   /**
    * Change an element in the tree
    * @param {number} index Index of element to change
    * @param element Updated element value
    */
   update(index, element) {
-    if (isNaN(Number(index)) || index < 0 || index > this._layers[0].length || index >= this.capacity) {
-      throw new Error('Insert index out of bounds: ' + index)
+    if (
+      isNaN(Number(index)) ||
+      index < 0 ||
+      index > this._layers[0].length ||
+      index >= this.capacity
+    ) {
+      throw new Error("Insert index out of bounds: " + index)
     }
     this._layers[0][index] = element
     this._processUpdate(index)
@@ -103,7 +107,7 @@ export default class BaseTree {
    */
   path(index) {
     if (isNaN(Number(index)) || index < 0 || index >= this._layers[0].length) {
-      throw new Error('Index out of bounds: ' + index)
+      throw new Error("Index out of bounds: " + index)
     }
     let elIndex = +index
     const pathElements = []
@@ -125,7 +129,7 @@ export default class BaseTree {
       pathElements,
       pathIndices,
       pathPositions,
-      pathRoot: this.root,
+      pathRoot: this.root
     }
   }
 
@@ -141,12 +145,15 @@ export default class BaseTree {
     let currentLength = Math.ceil(length / 2)
     const currentLayer = new Array(currentLength)
     currentLength--
-    const starFrom = length - ((length % 2) ^ 1)
+    const starFrom = length - (length % 2 ^ 1)
     let j = 0
     for (let i = starFrom; i >= 0; i -= 2) {
       if (nodes[i - 1] === undefined) break
       const left = nodes[i - 1]
-      const right = (i === starFrom && length % 2 === 1) ? this._zeros[layerIndex - 1] : nodes[i]
+      const right =
+        i === starFrom && length % 2 === 1
+          ? this._zeros[layerIndex - 1]
+          : nodes[i]
       currentLayer[currentLength - j] = this._hashFn(left, right)
       j++
     }
@@ -157,11 +164,11 @@ export default class BaseTree {
     for (let level = 1; level <= this.levels; level++) {
       index >>= 1
       const left = this._layers[level - 1][index * 2]
-      const right = index * 2 + 1 < this._layers[level - 1].length
-        ? this._layers[level - 1][index * 2 + 1]
-        : this._zeros[level - 1]
+      const right =
+        index * 2 + 1 < this._layers[level - 1].length
+          ? this._layers[level - 1][index * 2 + 1]
+          : this._zeros[level - 1]
       this._layers[level][index] = this._hashFn(left, right)
     }
   }
-
 }

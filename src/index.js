@@ -1,7 +1,4 @@
 import MerkleTree from "./fixed-merkle-tree/index.js"
-import { stringifyBigInts } from "./utils.js"
+import { stringifyBigInts, hex } from "./utils.js"
 
-export {
-    MerkleTree,
-    stringifyBigInts,
-}
+export { MerkleTree, stringifyBigInts, hex }
