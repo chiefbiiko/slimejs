@@ -1,30 +1,24 @@
-function fromString(s, radix) {
-  if (!radix || radix == 10) {
-    return BigInt(s)
-  } else if (radix == 16) {
-    if (s.slice(0, 2) == "0x") {
-      return BigInt(s)
-    } else {
-      return BigInt("0x" + s)
-    }
-  }
+export function hex(num, len = 32) {
+  return "0x" + num.toString(16).padStart(len * 2, "0")
 }
 
 // Pases a buffer with Little Endian Representation
-function fromRprLE(buff, o, n8) {
-  n8 = n8 || buff.byteLength
-  o = o || 0
-  const v = new Uint32Array(buff.buffer, buff.byteOffset + o, n8 / 4)
+function fromRprLE(buf, o = 0, n8 = buf.byteLength) {
+  const v = new Uint32Array(buf.buffer, buf.byteOffset + o, n8 / 4)
   const a = new Array(n8 / 4)
   v.forEach((ch, i) => (a[a.length - i - 1] = ch.toString(16).padStart(8, "0")))
-  return fromString(a.join(""), 16)
+  return BigInt("0x" + a.join(""))
 }
 
+// Stringifies bigints, bignumbers and numbers (also Uint8Arrays in LE order).
+// Non-Uint8Arrays are not read as one scalar but as array of scalars to be stringified.
+// For objects and arrays we do a depth-first traversal of inner items.
 export function stringifyBigInts(o) {
-  if (typeof o === "bigint" || o.eq !== undefined) {
-    return o.toString(10)
+  if (typeof o === "bigint" || typeof o === "number" || o.eq !== undefined) {
+    //BigNumber
+    return o.toString()
   } else if (o instanceof Uint8Array) {
-    return fromRprLE(o, 0)
+    return fromRprLE(o, 0).toString()
   } else if (Array.isArray(o)) {
     return o.map(stringifyBigInts)
   } else if (typeof o === "object") {
@@ -37,8 +31,4 @@ export function stringifyBigInts(o) {
   } else {
     return o
   }
-}
-
-export function hex(num, len = 32) {
-  return "0x" + num.toString(16).padStart(len * 2, "0")
 }
