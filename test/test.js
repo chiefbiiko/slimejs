@@ -14,20 +14,18 @@ const DEFAULT_ZERO =
 let poseidonHash2
 
 describe("utils", function () {
-  const num =
+  const B =
     "21888242871839275222246405745257275088614511777268538073601725287587578984328"
 
   it("should stringify bigints", async () => {
     const b =
       21888242871839275222246405745257275088614511777268538073601725287587578984328n
-    expect(stringifyBigInts(b)).to.equal(num)
+    expect(stringifyBigInts(b)).to.equal(B)
   })
 
   it("should stringify bignumbers", async () => {
-    const b = BigNumber.from(num)
-    expect(stringifyBigInts(b)).to.equal(
-      "21888242871839275222246405745257275088614511777268538073601725287587578984328"
-    )
+    const b = BigNumber.from(B)
+    expect(stringifyBigInts(b)).to.equal(B)
   })
 
   it("should stringify numbers", async () => {
@@ -35,10 +33,8 @@ describe("utils", function () {
   })
 
   it("should stringify Uint8Arrays", async () => {
-    const b = ethers.utils.arrayify(BigNumber.from(num).toHexString()).reverse()
-    expect(stringifyBigInts(b)).to.equal(
-      "21888242871839275222246405745257275088614511777268538073601725287587578984328"
-    )
+    const b = ethers.utils.arrayify(BigNumber.from(B).toHexString()).reverse()
+    expect(stringifyBigInts(b)).to.equal(B)
   })
 
   it("should stringify array items", async () => {
