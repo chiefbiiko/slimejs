@@ -18,7 +18,7 @@
 */
 
 import groth16_prove from "./groth16_prove.js";
-import wtns_calculate from "./wtns_calculate.js"; //TODO
+import wtns_calculate from "./wtns_calculate.js";
 // import {utils} from "ffjavascript";
 // const {unstringifyBigInts} = utils;
 import { unstringifyBigInts } from "../ffjavascript/index.js";

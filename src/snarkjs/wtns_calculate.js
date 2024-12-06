@@ -24,7 +24,7 @@ import * as binFileUtils from "../binfileutils/index.js";
 import { unstringifyBigInts } from "../ffjavascript/index.js";
 // import * as fastFile from "fastfile";
 import * as fastFile from "../fastfile/index.js";
-import { WitnessCalculatorBuilder } from "circom_runtime"; //TODO
+import { WitnessCalculatorBuilder } from "../circom_runtime/index.js";
 // import * as wtnsUtils from "./wtns_utils.js";
 import * as wtnsUtils from "./wtns_utils.js";
 
