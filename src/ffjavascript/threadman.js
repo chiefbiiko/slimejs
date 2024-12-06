@@ -34,9 +34,9 @@ class Deferred {
     }
 }
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+// function sleep(ms) {
+//     return new Promise(resolve => setTimeout(resolve, ms));
+// }
 
 // let workerSource;
 // const threadStr = `(${thread.toString()})(self)`;
@@ -249,10 +249,10 @@ export class ThreadManager {
     }
 
     async terminate() {
-        for (let i=0; i<this.workers.length; i++) {
-            this.workers[i].postMessage([{cmd: "TERMINATE"}]);
-        }
-        await sleep(200);
+        // no longer using workers
+        // for (let i=0; i<this.workers.length; i++) {
+        //     this.workers[i].postMessage([{cmd: "TERMINATE"}]);
+        // }
+        // await sleep(200);
     }
-
 }
