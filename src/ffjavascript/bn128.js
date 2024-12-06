@@ -1,5 +1,5 @@
 // import { buildBn128 as buildBn128wasm } from "wasmcurves";
-import { buildBn128Wasm } from "../wasmcurves/build_bn128_wasm.js"
+import buildBn128Wasm from "../wasmcurves/build_bn128_wasm.js"
 import { ModuleBuilder } from "../wasmbuilder/moduleBuilder.js";
 import buildEngine from "./engine.js";
 import * as Scalar from "./scalar.js";
