@@ -88,6 +88,32 @@ export function log2(V) {
     );
 }
 
+const _revTable = [];
+for (let i = 0; i < 256; i++) {
+    _revTable[i] = _revSlow(i, 8);
+}
+
+function _revSlow(idx, bits) {
+    let res = 0;
+    let a = idx;
+    for (let i = 0; i < bits; i++) {
+        res <<= 1;
+        res = res | (a & 1);
+        a >>= 1;
+    }
+    return res;
+}
+
+export function bitReverse(idx, bits) {
+    return (
+        (_revTable[idx >>> 24] |
+        (_revTable[(idx >>> 16) & 0xff] << 8) |
+        (_revTable[(idx >>> 8) & 0xff] << 16) |
+        (_revTable[idx & 0xff] << 24)) >>>
+        (32 - bits)
+    );
+}
+
 export function buffReverseBits(buff, eSize) {
     const n = buff.byteLength / eSize;
     const bits = log2(n);
