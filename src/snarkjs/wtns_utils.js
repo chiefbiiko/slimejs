@@ -20,8 +20,8 @@
 // import { Scalar } from "ffjavascript";
 import { Scalar } from "../ffjavascript/index.js"
 
-import * as binFileUtils from "@iden3/binfileutils"; //TODO
-
+// import * as binFileUtils from "@iden3/binfileutils";
+import * as binFileUtils from "../binfileutils/index.js";
 
 export async function write(fd, witness, prime) {
 

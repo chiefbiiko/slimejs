@@ -46,7 +46,8 @@
 
 // import { Scalar, F1Field } from "ffjavascript";
 import {log2,  Scalar, F1Field } from "../ffjavascript/index.js"
-import * as binFileUtils from "@iden3/binfileutils"; //TODO
+// import * as binFileUtils from "@iden3/binfileutils";
+import * as binFileUtils from "../binfileutils/index.js";
 
 import { getCurveFromQ as getCurve } from "./curves.js";
 // import { log2 } from "./misc.js";
