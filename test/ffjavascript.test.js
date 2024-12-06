@@ -1,6 +1,7 @@
 import hardhat from "hardhat"
 import { expect, assert } from "chai"
 import { stringifyBigInts } from "../src/index.js"
+import { unstringifyBigInts } from "../src/ffjavascript/index.js"
 import * as Scalar from "../src/ffjavascript/scalar.js"
 import buildBn128 from "../src/ffjavascript/bn128.js"
 import {log2} from "../src/ffjavascript/utils.js"
@@ -59,6 +60,13 @@ describe("ffjavascript", function () {
         c: { d: "-3", e: ["0", "99"] }
       })
     })
+
+    it("should un/stringify scalar bigint", () => {
+      const scalar = Scalar.e(B)
+      const str = stringifyBigInts(scalar);
+      const numFromStr = unstringifyBigInts(str);
+      assert(Scalar.eq(scalar, numFromStr), true);
+  });
   })
 
   describe("scalar", function () {

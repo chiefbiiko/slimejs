@@ -7,14 +7,14 @@ function fromRprLE(buf, o = 0, n8 = buf.byteLength) {
   }
   
   // Stringifies bigints, bignumbers and numbers (also Uint8Arrays in LE order).
-  // Non-Uint8Arrays are not read as one scalar but as array of scalars to be stringified.
+  // Non-Uint8 arrays are not read as one scalar but as array of scalars to be stringified.
   // For objects and arrays we do a depth-first traversal of inner items.
   export function stringifyBigInts(o) {
     if (typeof o === "bigint" || typeof o === "number" || o.eq !== undefined) {
-      //BigNumber
+      // the .eq check is a duck for BigNumber
       return o.toString()
     } else if (o instanceof Uint8Array) {
-      return fromRprLE(o, 0).toString()
+      return fromRprLE(o, 0).toString() // was w/o .toString()
     } else if (Array.isArray(o)) {
       return o.map(stringifyBigInts)
     } else if (typeof o === "object") {
@@ -28,6 +28,26 @@ function fromRprLE(buf, o = 0, n8 = buf.byteLength) {
       return o
     }
   }
+
+  export function unstringifyBigInts(o) {
+    if (typeof o === "string" && /^[0-9]+$/.test(o)) {
+        return BigInt(o);
+    } else if (typeof o === "string" && /^0x[0-9a-fA-F]+$/.test(o)) {
+        return BigInt(o);
+    } else if (Array.isArray(o)) {
+        return o.map(unstringifyBigInts);
+    } else if (typeof o === "object") {
+        if (o === null) return null;
+        const res = {};
+        const keys = Object.keys(o);
+        keys.forEach((k) => {
+            res[k] = unstringifyBigInts(o[k]);
+        });
+        return res;
+    } else {
+        return o;
+    }
+}
   
   export function leInt2Buff(n, len) {
     let r = n;
