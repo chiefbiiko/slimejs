@@ -29,3 +29,77 @@ function fromRprLE(buf, o = 0, n8 = buf.byteLength) {
     }
   }
   
+  export function leInt2Buff(n, len) {
+    let r = n;
+    if (typeof len === "undefined") {
+        len = Math.floor((Scalar.bitLength(n) - 1) / 8) + 1;
+        if (len == 0) len = 1;
+    }
+    const buff = new Uint8Array(len);
+    const buffV = new DataView(buff.buffer);
+    let o = 0;
+    while (o < len) {
+        if (o + 4 <= len) {
+            buffV.setUint32(o, Number(r & BigInt(0xffffffff)), true);
+            o += 4;
+            r = r >> BigInt(32);
+        } else if (o + 2 <= len) {
+            buffV.setUint16(o, Number(r & BigInt(0xffff)), true);
+            o += 2;
+            r = r >> BigInt(16);
+        } else {
+            buffV.setUint8(o, Number(r & BigInt(0xff)), true);
+            o += 1;
+            r = r >> BigInt(8);
+        }
+    }
+    if (r) {
+        throw new Error("Number does not fit in this length");
+    }
+    return buff;
+}
+
+export function array2buffer(arr, sG) {
+    const buff = new Uint8Array(sG * arr.length);
+
+    for (let i = 0; i < arr.length; i++) {
+        buff.set(arr[i], i * sG);
+    }
+
+    return buff;
+}
+
+export function buffer2array(buff, sG) {
+    const n = buff.byteLength / sG;
+    const arr = new Array(n);
+    for (let i = 0; i < n; i++) {
+        arr[i] = buff.slice(i * sG, i * sG + sG);
+    }
+    return arr;
+}
+
+export function log2(V) {
+    return (
+        ((V & 0xffff0000) !== 0 ? ((V &= 0xffff0000), 16) : 0) |
+        ((V & 0xff00ff00) !== 0 ? ((V &= 0xff00ff00), 8) : 0) |
+        ((V & 0xf0f0f0f0) !== 0 ? ((V &= 0xf0f0f0f0), 4) : 0) |
+        ((V & 0xcccccccc) !== 0 ? ((V &= 0xcccccccc), 2) : 0) |
+        ((V & 0xaaaaaaaa) !== 0)
+    );
+}
+
+export function buffReverseBits(buff, eSize) {
+    const n = buff.byteLength / eSize;
+    const bits = log2(n);
+    if (n != 1 << bits) {
+        throw new Error("Invalid number of pointers");
+    }
+    for (let i = 0; i < n; i++) {
+        const r = bitReverse(i, bits);
+        if (i > r) {
+            const tmp = buff.slice(i * eSize, (i + 1) * eSize);
+            buff.set(buff.slice(r * eSize, (r + 1) * eSize), i * eSize);
+            buff.set(tmp, r * eSize);
+        }
+    }
+}
