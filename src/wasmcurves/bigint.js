@@ -3,31 +3,31 @@
 // Ref https://github.com/peterolson/BigInteger.js/blob/e5d2154d3c417069c51e7116bafc3b91d0b9fe41/BigInteger.js
 // Originally licensed The Unlicense
 
-function compare(a, b) {
+export function compare(a, b) {
     return a === b ? 0 : a > b ? 1 : -1;
 }
 
-function square(n) {
+export function square(n) {
     return n * n;
 }
 
-function isOdd(n) {
+export function isOdd(n) {
     return n % 2n !== 0n;
 }
 
-function isEven(n) {
+export function isEven(n) {
     return n % 2n === 0n;
 }
 
-function isNegative(n) {
+export function isNegative(n) {
     return n < 0n;
 }
 
-function isPositive(n) {
+export function isPositive(n) {
     return n > 0n;
 }
 
-function bitLength(n) {
+export function bitLength(n) {
     if (isNegative(n)) {
         return n.toString(2).length - 1; // discard the - sign
     } else {
@@ -35,15 +35,15 @@ function bitLength(n) {
     }
 }
 
-function abs(n) {
+export function abs(n) {
     return n < 0n ? -n : n;
 }
 
-function isUnit(n) {
+export function isUnit(n) {
     return abs(n) === 1n;
 }
 
-function modInv(a, n) {
+export function modInv(a, n) {
     var t = 0n, newT = 1n, r = n, newR = abs(a), q, lastT, lastR;
     while (newR !== 0n) {
         q = r / newR;
@@ -64,7 +64,7 @@ function modInv(a, n) {
     return t;
 }
 
-function modPow(n, exp, mod) {
+export function modPow(n, exp, mod) {
     if (mod === 0n) throw new Error("Cannot take modPow with modulus 0");
     var r = 1n,
         base = n % mod;
@@ -81,20 +81,20 @@ function modPow(n, exp, mod) {
     return r;
 }
 
-function compareAbs(a, b) {
+export function compareAbs(a, b) {
     a = a >= 0n ? a : -a;
     b = b >= 0n ? b : -b;
     return a === b ? 0 : a > b ? 1 : -1;
 }
 
-function isDivisibleBy(a, n) {
+export function isDivisibleBy(a, n) {
     if (n === 0n) return false;
     if (isUnit(n)) return true;
     if (compareAbs(n, 2n) === 0) return isEven(a);
     return a % n === 0n;
 }
 
-function isBasicPrime(v) {
+export function isBasicPrime(v) {
     var n = abs(v);
     if (isUnit(n)) return false;
     if (n === 2n || n === 3n || n === 5n) return true;
@@ -103,11 +103,11 @@ function isBasicPrime(v) {
     // we don't know if it's prime: let the other functions figure it out
 }
 
-function prev(n) {
+export function prev(n) {
     return n - 1n;
 }
 
-function millerRabinTest(n, a) {
+export function millerRabinTest(n, a) {
     var nPrev = prev(n),
         b = nPrev,
         r = 0,
@@ -127,7 +127,7 @@ function millerRabinTest(n, a) {
     return true;
 }
 
-function isPrime(p) {
+export function isPrime(p) {
     var isPrime = isBasicPrime(p);
     if (isPrime !== undefined) return isPrime;
     var n = abs(p);
@@ -142,13 +142,13 @@ function isPrime(p) {
     return millerRabinTest(n, a);
 }
 
-module.exports.bitLength = bitLength;
-module.exports.isOdd = isOdd;
-module.exports.isNegative = isNegative;
-module.exports.abs = abs;
-module.exports.isUnit = isUnit;
-module.exports.compare = compare;
-module.exports.modInv = modInv;
-module.exports.modPow = modPow;
-module.exports.isPrime = isPrime;
-module.exports.square = square;
+// module.exports.bitLength = bitLength;
+// module.exports.isOdd = isOdd;
+// module.exports.isNegative = isNegative;
+// module.exports.abs = abs;
+// module.exports.isUnit = isUnit;
+// module.exports.compare = compare;
+// module.exports.modInv = modInv;
+// module.exports.modPow = modPow;
+// module.exports.isPrime = isPrime;
+// module.exports.square = square;

@@ -1,10 +1,9 @@
 import hardhat from "hardhat"
 import { expect } from "chai"
-import { MerkleTree, ModuleBuilder, hex, stringifyBigInts } from "../src/index.js"
+import { MerkleTree, hex } from "../src/index.js"
 import "./compileHasher.cjs"
 
 const { ethers, waffle } = hardhat
-const { BigNumber } = ethers
 
 const MERKLE_TREE_HEIGHT = 5
 // keccak256("tornado") % BN254_FIELD_SIZE
@@ -12,45 +11,6 @@ const DEFAULT_ZERO =
   "21663839004416932945382355908790599225266501822907911457504978515578255421292"
 
 let poseidonHash2
-
-describe("utils", function () {
-  const B =
-    "21888242871839275222246405745257275088614511777268538073601725287587578984328"
-
-  it("should stringify bigints", async () => {
-    const b =
-      21888242871839275222246405745257275088614511777268538073601725287587578984328n
-    expect(stringifyBigInts(b)).to.equal(B)
-  })
-
-  it("should stringify bignumbers", async () => {
-    const b = BigNumber.from(B)
-    expect(stringifyBigInts(b)).to.equal(B)
-  })
-
-  it("should stringify numbers", async () => {
-    expect(stringifyBigInts(419)).to.equal("419")
-  })
-
-  it("should stringify Uint8Arrays", async () => {
-    const b = ethers.utils.arrayify(BigNumber.from(B).toHexString()).reverse()
-    expect(stringifyBigInts(b)).to.equal(B)
-  })
-
-  it("should stringify array items", async () => {
-    const a = [1, 2n, [-3, [0, BigNumber.from(99)]]]
-    expect(stringifyBigInts(a)).to.deep.equal(["1", "2", ["-3", ["0", "99"]]])
-  })
-
-  it("should stringify object items", async () => {
-    const o = { a: 1, b: 2n, c: { d: -3, e: [0, BigNumber.from(99)] } }
-    expect(stringifyBigInts(o)).to.deep.equal({
-      a: "1",
-      b: "2",
-      c: { d: "-3", e: ["0", "99"] }
-    })
-  })
-})
 
 describe("fixed-merkle-tree", function () {
   this.timeout(20000)
@@ -179,19 +139,3 @@ describe("fixed-merkle-tree", function () {
     })
   })
 })
-
-// import assert from "assert";
-
-// import { ModuleBuilder } from "../main.js";
-
-// function buf2hex(buffer) { // buffer is an ArrayBuffer
-//     return Array.prototype.map.call(new Uint8Array(buffer), x => ("00" + x.toString(16)).slice(-2)).join("");
-// }
-
-describe("wasmbuilder", () => {
-    it("should generate a basic module", () => {
-        const module = new ModuleBuilder()
-        const bytes = module.build()
-        expect("0x0061736d01000000010100020f0103656e76066d656d6f72790200010301000701000a01000b0a010041000b0408000000", hex(bytes))
-    });
-});

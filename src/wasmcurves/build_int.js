@@ -17,7 +17,8 @@
     along with wasmsnark. If not, see <https://www.gnu.org/licenses/>.
 */
 
-module.exports = function buildInt(module, n64, _prefix) {
+// module.exports = function buildInt(module, n64, _prefix) {
+export default function buildInt(module, n64, _prefix) {
 
     const prefix = _prefix || "int";
     if (module.modules[prefix]) return prefix;  // already builded

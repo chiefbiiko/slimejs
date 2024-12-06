@@ -1,17 +1,29 @@
-const utils = require("./utils.js");
+// const utils = require("./utils.js");
+import { bigInt2BytesLE } from "./utils.js"
 
-const buildF1m =require("./build_f1m.js");
-const buildF1 =require("./build_f1.js");
-const buildF2m =require("./build_f2m.js");
-const buildF3m =require("./build_f3m.js");
-const buildCurve =require("./build_curve_jacobian_a0.js");
-const buildFFT = require("./build_fft");
-const buildPol = require("./build_pol");
-const buildQAP = require("./build_qap");
-const buildApplyKey = require("./build_applykey");
-const { bitLength, modInv, isOdd, isNegative } = require("./bigint.js");
+// const buildF1m =require("./build_f1m.js");
+import buildF1m from "./build_f1m.js";
+// const buildF1 =require("./build_f1.js");
+import buildF1 from "./build_f1.js";
+// const buildF2m =require("./build_f2m.js");
+import buildF2m from "./build_f2m.js"
+// const buildF3m =require("./build_f3m.js");
+import buildF3m from "./build_f3m.js";
+// const buildCurve =require("./build_curve_jacobian_a0.js");
+import buildCurve from "./build_curve_jacobian_a0.js"
+// const buildFFT = require("./build_fft");
+import buildFFT from "./build_fft.js";
+// const buildPol = require("./build_pol");
+import buildPol from "./build_pol.js";
+// const buildQAP = require("./build_qap");
+import buildQAP from "./build_qap.js";
+// const buildApplyKey = require("./build_applykey");
+import buildApplyKey from "./build_applykey.js";
+// const { bitLength, modInv, isOdd, isNegative } = require("./bigint.js");
+import { bitLength, modInv, isOdd, isNegative } from "./bigint.js"
 
-module.exports = function buildBn128Wasm(module, _prefix) {
+// module.exports = function buildBn128Wasm(module, _prefix) {
+export default function buildBn128Wasm(module, _prefix) {
 
     const prefix = _prefix || "bn128";
 
@@ -28,12 +40,12 @@ module.exports = function buildBn128Wasm(module, _prefix) {
     const f2size = f1size * 2;
     const ftsize = f1size * 12;
 
-    const pr = module.alloc(utils.bigInt2BytesLE( r, frsize ));
+    const pr = module.alloc(bigInt2BytesLE( r, frsize ));
 
     const f1mPrefix = buildF1m(module, q, "f1m");
     buildF1(module, r, "fr", "frm");
 
-    const pG1b = module.alloc(utils.bigInt2BytesLE( toMontgomery(3n), f1size ));
+    const pG1b = module.alloc(bigInt2BytesLE( toMontgomery(3n), f1size ));
     const g1mPrefix = buildCurve(module, "g1m", "f1m", pG1b);
 
     buildFFT(module, "frm", "frm", "frm", "frm_mul");
@@ -43,8 +55,8 @@ module.exports = function buildBn128Wasm(module, _prefix) {
 
     const f2mPrefix = buildF2m(module, "f1m_neg", "f2m", "f1m");
     const pG2b = module.alloc([
-        ...utils.bigInt2BytesLE( toMontgomery(19485874751759354771024239261021720505790618469301721065564631296452457478373n), f1size ),
-        ...utils.bigInt2BytesLE( toMontgomery(266929791119991161246907387137283842545076965332900288569378510910307636690n), f1size )
+        ...bigInt2BytesLE( toMontgomery(19485874751759354771024239261021720505790618469301721065564631296452457478373n), f1size ),
+        ...bigInt2BytesLE( toMontgomery(266929791119991161246907387137283842545076965332900288569378510910307636690n), f1size )
     ]);
     const g2mPrefix = buildCurve(module, "g2m", "f2m", pG2b);
 
@@ -99,9 +111,9 @@ module.exports = function buildBn128Wasm(module, _prefix) {
 
     const pG1gen = module.alloc(
         [
-            ...utils.bigInt2BytesLE( toMontgomery(G1gen[0]), f1size ),
-            ...utils.bigInt2BytesLE( toMontgomery(G1gen[1]), f1size ),
-            ...utils.bigInt2BytesLE( toMontgomery(G1gen[2]), f1size ),
+            ...bigInt2BytesLE( toMontgomery(G1gen[0]), f1size ),
+            ...bigInt2BytesLE( toMontgomery(G1gen[1]), f1size ),
+            ...bigInt2BytesLE( toMontgomery(G1gen[2]), f1size ),
         ]
     );
 
@@ -113,9 +125,9 @@ module.exports = function buildBn128Wasm(module, _prefix) {
 
     const pG1zero = module.alloc(
         [
-            ...utils.bigInt2BytesLE( toMontgomery(G1zero[0]), f1size ),
-            ...utils.bigInt2BytesLE( toMontgomery(G1zero[1]), f1size ),
-            ...utils.bigInt2BytesLE( toMontgomery(G1zero[2]), f1size )
+            ...bigInt2BytesLE( toMontgomery(G1zero[0]), f1size ),
+            ...bigInt2BytesLE( toMontgomery(G1zero[1]), f1size ),
+            ...bigInt2BytesLE( toMontgomery(G1zero[2]), f1size )
         ]
     );
 
@@ -134,12 +146,12 @@ module.exports = function buildBn128Wasm(module, _prefix) {
 
     const pG2gen = module.alloc(
         [
-            ...utils.bigInt2BytesLE( toMontgomery(G2gen[0][0]), f1size ),
-            ...utils.bigInt2BytesLE( toMontgomery(G2gen[0][1]), f1size ),
-            ...utils.bigInt2BytesLE( toMontgomery(G2gen[1][0]), f1size ),
-            ...utils.bigInt2BytesLE( toMontgomery(G2gen[1][1]), f1size ),
-            ...utils.bigInt2BytesLE( toMontgomery(G2gen[2][0]), f1size ),
-            ...utils.bigInt2BytesLE( toMontgomery(G2gen[2][1]), f1size ),
+            ...bigInt2BytesLE( toMontgomery(G2gen[0][0]), f1size ),
+            ...bigInt2BytesLE( toMontgomery(G2gen[0][1]), f1size ),
+            ...bigInt2BytesLE( toMontgomery(G2gen[1][0]), f1size ),
+            ...bigInt2BytesLE( toMontgomery(G2gen[1][1]), f1size ),
+            ...bigInt2BytesLE( toMontgomery(G2gen[2][0]), f1size ),
+            ...bigInt2BytesLE( toMontgomery(G2gen[2][1]), f1size ),
         ]
     );
 
@@ -158,45 +170,45 @@ module.exports = function buildBn128Wasm(module, _prefix) {
 
     const pG2zero = module.alloc(
         [
-            ...utils.bigInt2BytesLE( toMontgomery(G2zero[0][0]), f1size ),
-            ...utils.bigInt2BytesLE( toMontgomery(G2zero[0][1]), f1size ),
-            ...utils.bigInt2BytesLE( toMontgomery(G2zero[1][0]), f1size ),
-            ...utils.bigInt2BytesLE( toMontgomery(G2zero[1][1]), f1size ),
-            ...utils.bigInt2BytesLE( toMontgomery(G2zero[2][0]), f1size ),
-            ...utils.bigInt2BytesLE( toMontgomery(G2zero[2][1]), f1size ),
+            ...bigInt2BytesLE( toMontgomery(G2zero[0][0]), f1size ),
+            ...bigInt2BytesLE( toMontgomery(G2zero[0][1]), f1size ),
+            ...bigInt2BytesLE( toMontgomery(G2zero[1][0]), f1size ),
+            ...bigInt2BytesLE( toMontgomery(G2zero[1][1]), f1size ),
+            ...bigInt2BytesLE( toMontgomery(G2zero[2][0]), f1size ),
+            ...bigInt2BytesLE( toMontgomery(G2zero[2][1]), f1size ),
         ]
     );
 
     const pOneT = module.alloc([
-        ...utils.bigInt2BytesLE( toMontgomery(1), f1size ),
-        ...utils.bigInt2BytesLE( toMontgomery(0), f1size ),
-        ...utils.bigInt2BytesLE( toMontgomery(0), f1size ),
-        ...utils.bigInt2BytesLE( toMontgomery(0), f1size ),
-        ...utils.bigInt2BytesLE( toMontgomery(0), f1size ),
-        ...utils.bigInt2BytesLE( toMontgomery(0), f1size ),
-        ...utils.bigInt2BytesLE( toMontgomery(0), f1size ),
-        ...utils.bigInt2BytesLE( toMontgomery(0), f1size ),
-        ...utils.bigInt2BytesLE( toMontgomery(0), f1size ),
-        ...utils.bigInt2BytesLE( toMontgomery(0), f1size ),
-        ...utils.bigInt2BytesLE( toMontgomery(0), f1size ),
-        ...utils.bigInt2BytesLE( toMontgomery(0), f1size ),
+        ...bigInt2BytesLE( toMontgomery(1), f1size ),
+        ...bigInt2BytesLE( toMontgomery(0), f1size ),
+        ...bigInt2BytesLE( toMontgomery(0), f1size ),
+        ...bigInt2BytesLE( toMontgomery(0), f1size ),
+        ...bigInt2BytesLE( toMontgomery(0), f1size ),
+        ...bigInt2BytesLE( toMontgomery(0), f1size ),
+        ...bigInt2BytesLE( toMontgomery(0), f1size ),
+        ...bigInt2BytesLE( toMontgomery(0), f1size ),
+        ...bigInt2BytesLE( toMontgomery(0), f1size ),
+        ...bigInt2BytesLE( toMontgomery(0), f1size ),
+        ...bigInt2BytesLE( toMontgomery(0), f1size ),
+        ...bigInt2BytesLE( toMontgomery(0), f1size ),
     ]);
 
     const pNonResidueF6 = module.alloc([
-        ...utils.bigInt2BytesLE( toMontgomery(9), f1size ),
-        ...utils.bigInt2BytesLE( toMontgomery(1), f1size ),
+        ...bigInt2BytesLE( toMontgomery(9), f1size ),
+        ...bigInt2BytesLE( toMontgomery(1), f1size ),
     ]);
 
     const pTwoInv = module.alloc([
-        ...utils.bigInt2BytesLE( toMontgomery(  modInv(2n, q)), f1size ),
-        ...utils.bigInt2BytesLE( 0n, f1size )
+        ...bigInt2BytesLE( toMontgomery(  modInv(2n, q)), f1size ),
+        ...bigInt2BytesLE( 0n, f1size )
     ]);
 
     const pAltBn128Twist = pNonResidueF6;
 
     const pTwistCoefB = module.alloc([
-        ...utils.bigInt2BytesLE( toMontgomery(19485874751759354771024239261021720505790618469301721065564631296452457478373n), f1size ),
-        ...utils.bigInt2BytesLE( toMontgomery(266929791119991161246907387137283842545076965332900288569378510910307636690n), f1size ),
+        ...bigInt2BytesLE( toMontgomery(19485874751759354771024239261021720505790618469301721065564631296452457478373n), f1size ),
+        ...bigInt2BytesLE( toMontgomery(266929791119991161246907387137283842545076965332900288569378510910307636690n), f1size ),
     ]);
 
     function build_mulNR6() {
@@ -525,13 +537,13 @@ module.exports = function buildBn128Wasm(module, _prefix) {
         const z3 = c.i32_add(c.getLocal("pr"), c.i32_const(f2size*2));
 
         const MulByQX = c.i32_const(module.alloc([
-            ...utils.bigInt2BytesLE( toMontgomery("21575463638280843010398324269430826099269044274347216827212613867836435027261"), f1size ),
-            ...utils.bigInt2BytesLE( toMontgomery("10307601595873709700152284273816112264069230130616436755625194854815875713954"), f1size ),
+            ...bigInt2BytesLE( toMontgomery("21575463638280843010398324269430826099269044274347216827212613867836435027261"), f1size ),
+            ...bigInt2BytesLE( toMontgomery("10307601595873709700152284273816112264069230130616436755625194854815875713954"), f1size ),
         ]));
 
         const MulByQY = c.i32_const(module.alloc([
-            ...utils.bigInt2BytesLE( toMontgomery("2821565182194536844548159561693502659359617185244120367078079554186484126554"), f1size ),
-            ...utils.bigInt2BytesLE( toMontgomery("3505843767911556378687030309984248845540243509899259641013678093033130930403"), f1size ),
+            ...bigInt2BytesLE( toMontgomery("2821565182194536844548159561693502659359617185244120367078079554186484126554"), f1size ),
+            ...bigInt2BytesLE( toMontgomery("3505843767911556378687030309984248845540243509899259641013678093033130930403"), f1size ),
         ]));
 
         f.addCode(
@@ -958,8 +970,8 @@ module.exports = function buildBn128Wasm(module, _prefix) {
             const Rc1 = c.i32_add(c.getLocal("r"), c.i32_const(i*f2size + f1size));
             const coef = mul2(F12[Math.floor(i/3)][n%12] , F6[i%3][n%6]);
             const pCoef = module.alloc([
-                ...utils.bigInt2BytesLE(toMontgomery(coef[0]), 32),
-                ...utils.bigInt2BytesLE(toMontgomery(coef[1]), 32),
+                ...bigInt2BytesLE(toMontgomery(coef[0]), 32),
+                ...bigInt2BytesLE(toMontgomery(coef[1]), 32),
             ]);
             if (n%2 == 1) {
                 f.addCode(
@@ -1311,7 +1323,7 @@ module.exports = function buildBn128Wasm(module, _prefix) {
 
         const exponent = 552484233613224096312617126783173147097382103762957654188882734314196910839907541213974502761540629817009608548654680343627701153829446747810907373256841551006201639677726139946029199968412598804882391702273019083653272047566316584365559776493027495458238373902875937659943504873220554161550525926302303331747463515644711876653177129578303191095900909191624817826566688241804408081892785725967931714097716709526092261278071952560171111444072049229123565057483750161460024353346284167282452756217662335528813519139808291170539072125381230815729071544861602750936964829313608137325426383735122175229541155376346436093930287402089517426973178917569713384748081827255472576937471496195752727188261435633271238710131736096299798168852925540549342330775279877006784354801422249722573783561685179618816480037695005515426162362431072245638324744480n;
 
-        const pExponent = module.alloc(utils.bigInt2BytesLE( exponent, 352 ));
+        const pExponent = module.alloc(bigInt2BytesLE( exponent, 352 ));
 
         const c = f.getCodeBuilder();
 

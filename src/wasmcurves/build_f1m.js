@@ -17,15 +17,24 @@
     along with wasmsnark. If not, see <https://www.gnu.org/licenses/>.
 */
 
-const buildInt = require("./build_int.js");
-const utils = require("./utils.js");
-const buildExp = require("./build_timesscalar.js");
-const buildBatchInverse = require("./build_batchinverse.js");
-const buildBatchConvertion = require("./build_batchconvertion.js");
-const buildBatchOp = require("./build_batchop.js");
-const { bitLength, modInv, modPow, isPrime, isOdd, square } = require("./bigint.js");
+// const buildInt = require("./build_int.js");
+import buildInt from "./build_int.js"
+// const utils = require("./utils.js");
+// const buildExp = require("./build_timesscalar.js");
+// const buildBatchInverse = require("./build_batchinverse.js");
+// import utils from "./utils.js"
+import { bigInt2BytesLE } from "./utils.js"
+import buildExp from "./build_timesscalar.js"
+import buildBatchInverse from "./build_batchinverse.js"
+// const buildBatchConvertion = require("./build_batchconvertion.js");
+import buildBatchConvertion from "./build_batchconvertion.js"
+// const buildBatchOp = require("./build_batchop.js");
+import buildBatchOp from "./build_batchop.js"
+// const { bitLength, modInv, modPow, isPrime, isOdd, square } = require("./bigint.js");
+import { bitLength, modInv, modPow, isPrime, isOdd, square } from "./bigint.js"
 
-module.exports = function buildF1m(module, _q, _prefix, _intPrefix) {
+// module.exports = function buildF1m(module, _q, _prefix, _intPrefix) {
+export default function buildF1m(module, _q, _prefix, _intPrefix) {
     const q = BigInt(_q);
     const n64 = Math.floor((bitLength(q - 1n) - 1)/64) +1;
     const n32 = n64*2;
@@ -35,17 +44,17 @@ module.exports = function buildF1m(module, _q, _prefix, _intPrefix) {
     if (module.modules[prefix]) return prefix;  // already builded
 
     const intPrefix = buildInt(module, n64, _intPrefix);
-    const pq = module.alloc(n8, utils.bigInt2BytesLE(q, n8));
+    const pq = module.alloc(n8, bigInt2BytesLE(q, n8));
 
-    const pR2 = module.alloc(utils.bigInt2BytesLE(square(1n << BigInt(n64*64)) % q, n8));
-    const pOne = module.alloc(utils.bigInt2BytesLE((1n << BigInt(n64*64)) % q, n8));
-    const pZero = module.alloc(utils.bigInt2BytesLE(0n, n8));
+    const pR2 = module.alloc(bigInt2BytesLE(square(1n << BigInt(n64*64)) % q, n8));
+    const pOne = module.alloc(bigInt2BytesLE((1n << BigInt(n64*64)) % q, n8));
+    const pZero = module.alloc(bigInt2BytesLE(0n, n8));
     const _minusOne = q - 1n;
     const _e = _minusOne >> 1n; // e = (p-1)/2
-    const pe = module.alloc(n8, utils.bigInt2BytesLE(_e, n8));
+    const pe = module.alloc(n8, bigInt2BytesLE(_e, n8));
 
     const _ePlusOne = _e + 1n; // e = (p-1)/2
-    const pePlusOne = module.alloc(n8, utils.bigInt2BytesLE(_ePlusOne, n8));
+    const pePlusOne = module.alloc(n8, bigInt2BytesLE(_ePlusOne, n8));
 
     module.modules[prefix] = {
         pq: pq,
@@ -800,13 +809,13 @@ module.exports = function buildF1m(module, _q, _prefix, _intPrefix) {
         s2++;
         _t = _t >> 1n;
     }
-    const pt = module.alloc(n8, utils.bigInt2BytesLE(_t, n8));
+    const pt = module.alloc(n8, bigInt2BytesLE(_t, n8));
 
     const _nqrToT = modPow(_nqr, _t, q);
-    const pNqrToT = module.alloc(utils.bigInt2BytesLE((_nqrToT << BigInt(n64*64)) % q, n8));
+    const pNqrToT = module.alloc(bigInt2BytesLE((_nqrToT << BigInt(n64*64)) % q, n8));
 
     const _tPlusOneOver2 = (_t + 1n) >> 1n;
-    const ptPlusOneOver2 = module.alloc(n8, utils.bigInt2BytesLE(_tPlusOneOver2, n8));
+    const ptPlusOneOver2 = module.alloc(n8, bigInt2BytesLE(_tPlusOneOver2, n8));
 
     function buildSqrt() {
 

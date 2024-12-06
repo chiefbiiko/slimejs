@@ -16,11 +16,15 @@
     You should have received a copy of the GNU General Public License
     along with wasmsnark. If not, see <https://www.gnu.org/licenses/>.
 */
-const buildExp = require("./build_timesscalar.js");
-const buildBatchInverse = require("./build_batchinverse.js");
-const utils = require("./utils.js");
+// const buildExp = require("./build_timesscalar");
+import buildExp from "./build_timesscalar.js"
+// const buildBatchInverse = require("./build_batchinverse");
+import buildBatchInverse from "./build_batchinverse.js"
+// const utils = require("./utils.js");
+import { bigInt2BytesLE } from "./utils.js"
 
-module.exports = function buildF2m(module, mulNonResidueFn, prefix, f1mPrefix) {
+// module.exports = function buildF2m(module, mulNonResidueFn, prefix, f1mPrefix) {
+export default function buildF2m(module, mulNonResidueFn, prefix, f1mPrefix) {
 
     if (module.modules[prefix]) return prefix;  // already builded
 
@@ -459,9 +463,9 @@ module.exports = function buildF2m(module, mulNonResidueFn, prefix, f1mPrefix) {
         const c = f.getCodeBuilder();
 
         // BigInt can't take `undefined` so we use `|| 0`
-        const e34 = c.i32_const(module.alloc(utils.bigInt2BytesLE((BigInt(q || 0) - 3n) / 4n, f1n8 )));
+        const e34 = c.i32_const(module.alloc(bigInt2BytesLE((BigInt(q || 0) - 3n) / 4n, f1n8 )));
         // BigInt can't take `undefined` so we use `|| 0`
-        const e12 = c.i32_const(module.alloc(utils.bigInt2BytesLE((BigInt(q || 0) - 1n) / 2n, f1n8 )));
+        const e12 = c.i32_const(module.alloc(bigInt2BytesLE((BigInt(q || 0) - 1n) / 2n, f1n8 )));
 
         const a = c.getLocal("a");
         const a1 = c.i32_const(module.alloc(f1n8*2));
@@ -529,7 +533,7 @@ module.exports = function buildF2m(module, mulNonResidueFn, prefix, f1mPrefix) {
         const c = f.getCodeBuilder();
 
         // BigInt can't take `undefined` so we use `|| 0`
-        const e34 = c.i32_const(module.alloc(utils.bigInt2BytesLE((BigInt(q || 0) - 3n) / 4n, f1n8 )));
+        const e34 = c.i32_const(module.alloc(bigInt2BytesLE((BigInt(q || 0) - 3n) / 4n, f1n8 )));
 
         const a = c.getLocal("a");
         const a1 = c.i32_const(module.alloc(f1n8*2));

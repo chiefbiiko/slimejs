@@ -17,12 +17,16 @@
     along with wasmsnark. If not, see <https://www.gnu.org/licenses/>.
 */
 
-const buildTimesScalarNAF = require("./build_timesscalarnaf");
+// const buildTimesScalarNAF = require("./build_timesscalarnaf");
+import buildTimesScalarNAF from "./build_timescalarnaf.js";
 //const buildTimesScalar = require("./build_timesscalar");
-const buildBatchConvertion = require("./build_batchconvertion");
-const buildMultiexp = require("./build_multiexp");
+// const buildBatchConvertion = require("./build_batchconvertion");
+import buildBatchConvertion from "./build_batchconvertion.js";
+// const buildMultiexp = require("./build_multiexp");
+import buildMultiexp from "./build_multiexp.js";
 
-module.exports = function buildCurve(module, prefix, prefixField, pB) {
+// module.exports = function buildCurve(module, prefix, prefixField, pB) {
+export default function buildCurve(module, prefix, prefixField, pB) {
 
 
     const n64 = module.modules[prefixField].n64;
