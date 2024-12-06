@@ -53,7 +53,8 @@ function sleep(ms) {
 // }
 
 export default async function buildThreadManager(wasm, singleThread) {
-    // const singleThread = true
+    //FIXME hardcode singleThread at some top level so any consumer gets it
+    singleThread = true 
 
     const tm = new ThreadManager();
 
