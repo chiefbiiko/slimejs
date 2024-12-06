@@ -52,10 +52,8 @@ function sleep(ms) {
 //     workerSource = "data:application/javascript;base64," + Buffer.from(threadStr).toString("base64");
 // }
 
-export default async function buildThreadManager(wasm, /*singleThread*/) {
-    // NOTE: hardcoded singleThread=true because that's what we will use 
-    //       and it saves some code and deps.
-    const singleThread = true
+export default async function buildThreadManager(wasm, singleThread) {
+    // const singleThread = true
 
     const tm = new ThreadManager();
 
