@@ -3,7 +3,7 @@ import poseidonConstants from "./poseidon_constants_opt.js";
 
 import { getCurveFromName, Scalar, F1Field } from "../ffjavascript/index.js";
 
-export async function buildPoseidon() {
+export default async function buildPoseidon() {
     const bn128 = await getCurveFromName("bn128", true, buildPoseidonWasm);
 
     const F = bn128.Fr;
