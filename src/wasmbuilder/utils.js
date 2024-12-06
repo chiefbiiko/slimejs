@@ -92,7 +92,7 @@ export function toUTF8Array(str) {
     return utf8;
 }
 
-export function string(str) {
+export function str(str) {
     const bytes = toUTF8Array(str);
     return [ ...varuint32(bytes.length), ...bytes ];
 }

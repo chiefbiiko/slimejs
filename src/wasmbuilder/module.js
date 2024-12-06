@@ -17,10 +17,11 @@
     along with wasmbuilder. If not, see <https://www.gnu.org/licenses/>.
 */
 
-import { FunctionBuilder } from "./functionBuilder.js";
-import * as utils from "./utils.js";
+import FunctionBuilder  from "./function.js";
+// import * as utils from "./utils.js";
+import { varint32, varuint32, str, u32, toHexString } from "./utils.js"
 
-export class ModuleBuilder {
+export default class ModuleBuilder {
 
     constructor() {
         this.functions = [];
@@ -42,8 +43,8 @@ export class ModuleBuilder {
     build() {
         this._setSignatures();
         return new Uint8Array([
-            ...utils.u32(0x6d736100),
-            ...utils.u32(1),
+            ...u32(0x6d736100),
+            ...u32(1),
             ...this._buildType(),
             ...this._buildImport(),
             ...this._buildFunctionDeclarations(),
@@ -151,13 +152,13 @@ export class ModuleBuilder {
         const signatureIdxByName = {};
         if (this.functionsTable.length>0) {
             const signature = this.functions[this.functionsTable[0]].getSignature();
-            const signatureName = "s_"+utils.toHexString(signature);
+            const signatureName = "s_"+toHexString(signature);
             signatureIdxByName[signatureName] = 0;
             this.signatures.push(signature);
         }
         for (let i=0; i<this.functions.length; i++) {
             const signature = this.functions[i].getSignature();
-            const signatureName = "s_"+utils.toHexString(signature);
+            const signatureName = "s_"+toHexString(signature);
             if (typeof(signatureIdxByName[signatureName]) === "undefined") {
                 signatureIdxByName[signatureName] = this.signatures.length;
                 this.signatures.push(signature);
@@ -169,14 +170,14 @@ export class ModuleBuilder {
     }
 
     _buildSection(sectionType, section) {
-        return [sectionType, ...utils.varuint32(section.length), ...section];
+        return [sectionType, ...varuint32(section.length), ...section];
     }
 
     _buildType() {
         return this._buildSection(
             0x01,
             [
-                ...utils.varuint32(this.signatures.length),
+                ...varuint32(this.signatures.length),
                 ...[].concat(...this.signatures)
             ]
         );
@@ -185,35 +186,35 @@ export class ModuleBuilder {
     _buildImport() {
         const entries = [];
         entries.push([
-            ...utils.string(this.memory.moduleName),
-            ...utils.string(this.memory.fieldName),
+            ...str(this.memory.moduleName),
+            ...str(this.memory.fieldName),
             0x02,
             0x00,   //Flags no init valua
-            ...utils.varuint32(this.memory.pagesSize)
+            ...varuint32(this.memory.pagesSize)
         ]);
         for (let i=0; i< this.nImportFunctions; i++) {
             entries.push([
-                ...utils.string(this.functions[i].moduleName),
-                ...utils.string(this.functions[i].fieldName),
+                ...str(this.functions[i].moduleName),
+                ...str(this.functions[i].fieldName),
                 0x00,
-                ...utils.varuint32(this.functions[i].signatureIdx)
+                ...varuint32(this.functions[i].signatureIdx)
             ]);
         }
         return this._buildSection(
             0x02,
-            utils.varuint32(entries.length).concat(...entries)
+            varuint32(entries.length).concat(...entries)
         );
     }
 
     _buildFunctionDeclarations() {
         const entries = [];
         for (let i=this.nImportFunctions; i< this.nImportFunctions + this.nInternalFunctions; i++) {
-            entries.push(...utils.varuint32(this.functions[i].signatureIdx));
+            entries.push(...varuint32(this.functions[i].signatureIdx));
         }
         return this._buildSection(
             0x03,
             [
-                ...utils.varuint32(entries.length),
+                ...varuint32(entries.length),
                 ...[...entries]
             ]
         );
@@ -224,8 +225,8 @@ export class ModuleBuilder {
         return this._buildSection(
             0x04,
             [
-                ...utils.varuint32(1),
-                0x70, 0, ...utils.varuint32(this.functionsTable.length)
+                ...varuint32(1),
+                0x70, 0, ...varuint32(this.functionsTable.length)
             ]
         );
     }
@@ -234,17 +235,17 @@ export class ModuleBuilder {
         if (this.functionsTable.length == 0) return [];
         const entries = [];
         for (let i=0; i<this.functionsTable.length; i++) {
-            entries.push(...utils.varuint32(this.functionsTable[i]));
+            entries.push(...varuint32(this.functionsTable[i]));
         }
         return this._buildSection(
             0x09,
             [
-                ...utils.varuint32(1),      // 1 entry
-                ...utils.varuint32(0),      // Table (0 in MVP)
+                ...varuint32(1),      // 1 entry
+                ...varuint32(0),      // Table (0 in MVP)
                 0x41,                       // offset 0
-                ...utils.varint32(0),
+                ...varint32(0),
                 0x0b,
-                ...utils.varuint32(this.functionsTable.length), // Number of elements
+                ...varuint32(this.functionsTable.length), // Number of elements
                 ...[...entries]
             ]
         );
@@ -254,14 +255,14 @@ export class ModuleBuilder {
         const entries = [];
         for (let i=0; i< this.exports.length; i++) {
             entries.push([
-                ...utils.string(this.exports[i].exportName),
+                ...str(this.exports[i].exportName),
                 0x00,
-                ...utils.varuint32(this.exports[i].idx)
+                ...varuint32(this.exports[i].idx)
             ]);
         }
         return this._buildSection(
             0x07,
-            utils.varuint32(entries.length).concat(...entries)
+            varuint32(entries.length).concat(...entries)
         );
     }
 
@@ -272,7 +273,7 @@ export class ModuleBuilder {
         }
         return this._buildSection(
             0x0a,
-            utils.varuint32(entries.length).concat(...entries)
+            varuint32(entries.length).concat(...entries)
         );
     }
 
@@ -284,21 +285,21 @@ export class ModuleBuilder {
             0x00,
             0x0b,
             0x04,
-            ...utils.u32(this.free)
+            ...u32(this.free)
         ]);
         for (let i=0; i< this.datas.length; i++) {
             entries.push([
                 0x00,
                 0x41,
-                ...utils.varint32(this.datas[i].offset),
+                ...varint32(this.datas[i].offset),
                 0x0b,
-                ...utils.varuint32(this.datas[i].bytes.length),
+                ...varuint32(this.datas[i].bytes.length),
                 ...this.datas[i].bytes,
             ]);
         }
         return this._buildSection(
             0x0b,
-            utils.varuint32(entries.length).concat(...entries)
+            varuint32(entries.length).concat(...entries)
         );
     }
 

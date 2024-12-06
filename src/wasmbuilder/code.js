@@ -17,9 +17,10 @@
     along with wasmbuilder. If not, see <https://www.gnu.org/licenses/>.
 */
 
-import * as utils from "./utils.js";
+// import * as utils from "./utils.js";
+import { varint64, varint32, varuint32} from "./utils.js"
 
-export class CodeBuilder {
+export default class CodeBuilder {
     constructor(func) {
         this.func = func;
         this.functionName = func.functionName;
@@ -30,63 +31,63 @@ export class CodeBuilder {
         const idx = this.func.localIdxByName[localName];
         if (idx === undefined)
             throw new Error(`Local Variable not defined: Function: ${this.functionName} local: ${localName} `);
-        return [...valCode, 0x21, ...utils.varuint32( idx )];
+        return [...valCode, 0x21, ...varuint32( idx )];
     }
 
     teeLocal(localName, valCode) {
         const idx = this.func.localIdxByName[localName];
         if (idx === undefined)
             throw new Error(`Local Variable not defined: Function: ${this.functionName} local: ${localName} `);
-        return [...valCode, 0x22, ...utils.varuint32( idx )];
+        return [...valCode, 0x22, ...varuint32( idx )];
     }
 
     getLocal(localName) {
         const idx = this.func.localIdxByName[localName];
         if (idx === undefined)
             throw new Error(`Local Variable not defined: Function: ${this.functionName} local: ${localName} `);
-        return [0x20, ...utils.varuint32( idx )];
+        return [0x20, ...varuint32( idx )];
     }
 
     i64_load8_s(idxCode, _offset, _align) {
         const offset = _offset || 0;
         const align = (_align === undefined) ? 0 : _align;  // 8 bits alignment by default
-        return [...idxCode, 0x30, align, ...utils.varuint32(offset)];
+        return [...idxCode, 0x30, align, ...varuint32(offset)];
     }
 
     i64_load8_u(idxCode, _offset, _align) {
         const offset = _offset || 0;
         const align = (_align === undefined) ? 0 : _align;  // 8 bits alignment by default
-        return [...idxCode, 0x31, align, ...utils.varuint32(offset)];
+        return [...idxCode, 0x31, align, ...varuint32(offset)];
     }
 
     i64_load16_s(idxCode, _offset, _align) {
         const offset = _offset || 0;
         const align = (_align === undefined) ? 1 : _align;  // 16 bits alignment by default
-        return [...idxCode, 0x32, align, ...utils.varuint32(offset)];
+        return [...idxCode, 0x32, align, ...varuint32(offset)];
     }
 
     i64_load16_u(idxCode, _offset, _align) {
         const offset = _offset || 0;
         const align = (_align === undefined) ? 1 : _align;  // 16 bits alignment by default
-        return [...idxCode, 0x33, align, ...utils.varuint32(offset)];
+        return [...idxCode, 0x33, align, ...varuint32(offset)];
     }
 
     i64_load32_s(idxCode, _offset, _align) {
         const offset = _offset || 0;
         const align = (_align === undefined) ? 2 : _align;  // 32 bits alignment by default
-        return [...idxCode, 0x34, align, ...utils.varuint32(offset)];
+        return [...idxCode, 0x34, align, ...varuint32(offset)];
     }
 
     i64_load32_u(idxCode, _offset, _align) {
         const offset = _offset || 0;
         const align = (_align === undefined) ? 2 : _align;  // 32 bits alignment by default
-        return [...idxCode, 0x35, align, ...utils.varuint32(offset)];
+        return [...idxCode, 0x35, align, ...varuint32(offset)];
     }
 
     i64_load(idxCode, _offset, _align) {
         const offset = _offset || 0;
         const align = (_align === undefined) ? 3 : _align;  // 64 bits alignment by default
-        return [...idxCode, 0x29, align, ...utils.varuint32(offset)];
+        return [...idxCode, 0x29, align, ...varuint32(offset)];
     }
 
 
@@ -105,7 +106,7 @@ export class CodeBuilder {
             align = _align;
             codeVal = _codeVal;
         }
-        return [...idxCode, ...codeVal, 0x37, align, ...utils.varuint32(offset)];
+        return [...idxCode, ...codeVal, 0x37, align, ...varuint32(offset)];
     }
 
     i64_store32(idxCode, _offset, _align, _codeVal) {
@@ -123,7 +124,7 @@ export class CodeBuilder {
             align = _align;
             codeVal = _codeVal;
         }
-        return [...idxCode, ...codeVal, 0x3e, align, ...utils.varuint32(offset)];
+        return [...idxCode, ...codeVal, 0x3e, align, ...varuint32(offset)];
     }
 
 
@@ -142,7 +143,7 @@ export class CodeBuilder {
             align = _align;
             codeVal = _codeVal;
         }
-        return [...idxCode, ...codeVal, 0x3d, align, ...utils.varuint32(offset)];
+        return [...idxCode, ...codeVal, 0x3d, align, ...varuint32(offset)];
     }
 
 
@@ -161,37 +162,37 @@ export class CodeBuilder {
             align = _align;
             codeVal = _codeVal;
         }
-        return [...idxCode, ...codeVal, 0x3c, align, ...utils.varuint32(offset)];
+        return [...idxCode, ...codeVal, 0x3c, align, ...varuint32(offset)];
     }
 
     i32_load8_s(idxCode, _offset, _align) {
         const offset = _offset || 0;
         const align = (_align === undefined) ? 0 : _align;  // 32 bits alignment by default
-        return [...idxCode, 0x2c, align, ...utils.varuint32(offset)];
+        return [...idxCode, 0x2c, align, ...varuint32(offset)];
     }
 
     i32_load8_u(idxCode, _offset, _align) {
         const offset = _offset || 0;
         const align = (_align === undefined) ? 0 : _align;  // 32 bits alignment by default
-        return [...idxCode, 0x2d, align, ...utils.varuint32(offset)];
+        return [...idxCode, 0x2d, align, ...varuint32(offset)];
     }
 
     i32_load16_s(idxCode, _offset, _align) {
         const offset = _offset || 0;
         const align = (_align === undefined) ? 1 : _align;  // 32 bits alignment by default
-        return [...idxCode, 0x2e, align, ...utils.varuint32(offset)];
+        return [...idxCode, 0x2e, align, ...varuint32(offset)];
     }
 
     i32_load16_u(idxCode, _offset, _align) {
         const offset = _offset || 0;
         const align = (_align === undefined) ? 1 : _align;  // 32 bits alignment by default
-        return [...idxCode, 0x2f, align, ...utils.varuint32(offset)];
+        return [...idxCode, 0x2f, align, ...varuint32(offset)];
     }
 
     i32_load(idxCode, _offset, _align) {
         const offset = _offset || 0;
         const align = (_align === undefined) ? 2 : _align;  // 32 bits alignment by default
-        return [...idxCode, 0x28, align, ...utils.varuint32(offset)];
+        return [...idxCode, 0x28, align, ...varuint32(offset)];
     }
 
     i32_store(idxCode, _offset, _align, _codeVal) {
@@ -209,7 +210,7 @@ export class CodeBuilder {
             align = _align;
             codeVal = _codeVal;
         }
-        return [...idxCode, ...codeVal, 0x36, align, ...utils.varuint32(offset)];
+        return [...idxCode, ...codeVal, 0x36, align, ...varuint32(offset)];
     }
 
 
@@ -228,7 +229,7 @@ export class CodeBuilder {
             align = _align;
             codeVal = _codeVal;
         }
-        return [...idxCode, ...codeVal, 0x3b, align, ...utils.varuint32(offset)];
+        return [...idxCode, ...codeVal, 0x3b, align, ...varuint32(offset)];
     }
 
     i32_store8(idxCode, _offset, _align, _codeVal) {
@@ -246,14 +247,14 @@ export class CodeBuilder {
             align = _align;
             codeVal = _codeVal;
         }
-        return [...idxCode, ...codeVal, 0x3a, align, ...utils.varuint32(offset)];
+        return [...idxCode, ...codeVal, 0x3a, align, ...varuint32(offset)];
     }
 
     call(fnName, ...args) {
         const idx = this.module.functionIdxByName[fnName];
         if (idx === undefined)
             throw new Error(`Function not defined: Function: ${fnName}`);
-        return [...[].concat(...args), 0x10, ...utils.varuint32(idx)];
+        return [...[].concat(...args), 0x10, ...varuint32(idx)];
     }
 
     call_indirect(fnIdx, ...args) {
@@ -272,13 +273,13 @@ export class CodeBuilder {
     loop(...args) {
         return [0x03, 0x40, ...[].concat(...[...args]), 0x0b];
     }
-    br_if(relPath, condCode) { return [...condCode, 0x0d, ...utils.varuint32(relPath)]; }
-    br(relPath) { return [0x0c, ...utils.varuint32(relPath)]; }
+    br_if(relPath, condCode) { return [...condCode, 0x0d, ...varuint32(relPath)]; }
+    br(relPath) { return [0x0c, ...varuint32(relPath)]; }
     ret(rCode) { return [...rCode, 0x0f]; }
     drop(dCode) { return [...dCode,  0x1a]; }
 
-    i64_const(num) { return [0x42, ...utils.varint64(num)]; }
-    i32_const(num) { return [0x41, ...utils.varint32(num)]; }
+    i64_const(num) { return [0x42, ...varint64(num)]; }
+    i32_const(num) { return [0x41, ...varint32(num)]; }
 
 
     i64_eqz(opcode) { return [...opcode, 0x50]; }

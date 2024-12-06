@@ -17,8 +17,9 @@
     along with wasmbuilder. If not, see <https://www.gnu.org/licenses/>.
 */
 
-import { CodeBuilder } from "./codeBuilder.js";
-import * as utils from "./utils.js";
+import  CodeBuilder from "./code.js";
+// import * as utils from "./utils.js";
+import { varuint32} from "./utils.js"
 
 const typeCodes = {
     "i32": 0x7f,
@@ -31,7 +32,7 @@ const typeCodes = {
 };
 
 
-export class FunctionBuilder {
+export default class FunctionBuilder {
 
     constructor (module, fnName, fnType, moduleName, fieldName) {
         if (fnType == "import") {
@@ -82,25 +83,25 @@ export class FunctionBuilder {
     }
 
     getSignature() {
-        const params = [...utils.varuint32(this.params.length), ...this.params.map((p) => typeCodes[p.type])];
+        const params = [...varuint32(this.params.length), ...this.params.map((p) => typeCodes[p.type])];
         const returns = this.returnType ? [0x01, typeCodes[this.returnType]] : [0];
         return [0x60, ...params, ...returns];
     }
 
     getBody() {
         const locals = this.locals.map((l) => [
-            ...utils.varuint32(l.length),
+            ...varuint32(l.length),
             typeCodes[l.type]
         ]);
 
         const body = [
-            ...utils.varuint32(this.locals.length),
+            ...varuint32(this.locals.length),
             ...[].concat(...locals),
             ...this.code,
             0x0b
         ];
         return [
-            ...utils.varuint32(body.length),
+            ...varuint32(body.length),
             ...body
         ];
     }

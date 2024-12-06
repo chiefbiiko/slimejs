@@ -6,7 +6,7 @@ import buildBn128 from "../src/wasmcurves/build_bn128_wasm.js"
 import { buildProtoboard } from "wasmbuilder"
 
 // Basic tests for g1 in bn128
-describe.skip("wasmcurves", () => {
+describe("wasmcurves", () => {
 
     function getFieldElementF12(pR) {
         return [
