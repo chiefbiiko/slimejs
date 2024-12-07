@@ -7,8 +7,7 @@ const { ethers, waffle } = hardhat
 
 const MERKLE_TREE_HEIGHT = 5
 // keccak256("tornado") % BN254_FIELD_SIZE
-const DEFAULT_ZERO =
-  "21663839004416932945382355908790599225266501822907911457504978515578255421292"
+const DEFAULT_ZERO = "21663839004416932945382355908790599225266501822907911457504978515578255421292"
 
 let poseidonHash2
 
@@ -30,11 +29,7 @@ describe("fixed-merkle-tree", function () {
 
   async function fixture() {
     const hasher = await deploy("Hasher")
-    const merkleTreeWithHistory = await deploy(
-      "MerkleTreeWithHistoryMock",
-      MERKLE_TREE_HEIGHT,
-      hasher.address
-    )
+    const merkleTreeWithHistory = await deploy("MerkleTreeWithHistoryMock", MERKLE_TREE_HEIGHT, hasher.address)
     //TODO use custom circomlibjs once ready
     const { buildPoseidon } = await import("circomlibjs")
     const poseidon = await buildPoseidon()
@@ -53,19 +48,14 @@ describe("fixed-merkle-tree", function () {
   describe("#constructor", () => {
     it("should correctly hash 2 leaves", async () => {
       const { merkleTreeWithHistory } = await waffle.loadFixture(fixture)
-      const hash0 = await merkleTreeWithHistory.hashLeftRight(
-        hex(123),
-        hex(456)
-      )
+      const hash0 = await merkleTreeWithHistory.hashLeftRight(hex(123), hex(456))
       const hash2 = poseidonHash2(123, 456)
       expect(hash0).to.equal(hash2)
     })
 
     it("should initialize", async () => {
       const { merkleTreeWithHistory } = await waffle.loadFixture(fixture)
-      const zeroValue = await merkleTreeWithHistory
-        .ZERO_VALUE()
-        .then(r => r.toHexString())
+      const zeroValue = await merkleTreeWithHistory.ZERO_VALUE().then(r => r.toHexString())
       const firstSubtree = await merkleTreeWithHistory.filledSubtrees(0)
       const firstZero = await merkleTreeWithHistory.zeros(0)
       expect(firstSubtree).to.be.equal(zeroValue)
@@ -95,18 +85,14 @@ describe("fixed-merkle-tree", function () {
 
     it("hasher gas", async () => {
       const { merkleTreeWithHistory } = await waffle.loadFixture(fixture)
-      const gas = await merkleTreeWithHistory.estimateGas
-        .hashLeftRight(hex(123), hex(456))
-        .then(r => r.toNumber())
+      const gas = await merkleTreeWithHistory.estimateGas.hashLeftRight(hex(123), hex(456)).then(r => r.toNumber())
       expect(gas).to.equal(54401)
     })
   })
 
   describe("#isKnownRoot", () => {
     async function fixtureFilled() {
-      const { merkleTreeWithHistory, hasher } = await waffle.loadFixture(
-        fixture
-      )
+      const { merkleTreeWithHistory, hasher } = await waffle.loadFixture(fixture)
       await merkleTreeWithHistory.insert(hex(123), hex(456))
       return { merkleTreeWithHistory, hasher }
     }

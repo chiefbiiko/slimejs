@@ -17,33 +17,33 @@
     along with snarkJS. If not, see <https://www.gnu.org/licenses/>.
 */
 
-import * as binFileUtils from "../binfileutils/index.js";
-import { unstringifyBigInts } from "../ffjavascript/index.js";
-import * as fastFile from "../fastfile/index.js";
-import { WitnessCalculatorBuilder } from "../circom_runtime/index.js";
-import * as wtnsUtils from "./wtns_utils.js";
+import * as binFileUtils from "../binfileutils/index.js"
+import { unstringifyBigInts } from "../ffjavascript/index.js"
+import * as fastFile from "../fastfile/index.js"
+import { WitnessCalculatorBuilder } from "../circom_runtime/index.js"
+import * as wtnsUtils from "./wtns_utils.js"
 
 export default async function wtnsCalculate(_input, wasmFileName, wtnsFileName, options) {
-    const input = unstringifyBigInts(_input);
+  const input = unstringifyBigInts(_input)
 
-    const fdWasm = await fastFile.readExisting(wasmFileName);
-    const wasm = await fdWasm.read(fdWasm.totalSize);
-    await fdWasm.close();
+  const fdWasm = await fastFile.readExisting(wasmFileName)
+  const wasm = await fdWasm.read(fdWasm.totalSize)
+  await fdWasm.close()
 
-    const wc = await WitnessCalculatorBuilder(wasm, options);
-    if (wc.circom_version() === 1) {
-        const w = await wc.calculateBinWitness(input);
+  const wc = await WitnessCalculatorBuilder(wasm, options)
+  if (wc.circom_version() === 1) {
+    const w = await wc.calculateBinWitness(input)
 
-        const fdWtns = await binFileUtils.createBinFile(wtnsFileName, "wtns", 2, 2);
+    const fdWtns = await binFileUtils.createBinFile(wtnsFileName, "wtns", 2, 2)
 
-        await wtnsUtils.writeBin(fdWtns, w, wc.prime);
-        await fdWtns.close();
-    } else {
-        const fdWtns = await fastFile.createOverride(wtnsFileName);
+    await wtnsUtils.writeBin(fdWtns, w, wc.prime)
+    await fdWtns.close()
+  } else {
+    const fdWtns = await fastFile.createOverride(wtnsFileName)
 
-        const w = await wc.calculateWTNSBin(input);
+    const w = await wc.calculateWTNSBin(input)
 
-        await fdWtns.write(w);
-        await fdWtns.close();
-    }
+    await fdWtns.write(w)
+    await fdWtns.close()
+  }
 }

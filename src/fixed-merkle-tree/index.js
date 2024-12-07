@@ -2,11 +2,7 @@ import defaultHash from "./simpleHash.js"
 import BaseTree from "./base.js"
 
 export default class MerkleTree extends BaseTree {
-  constructor(
-    levels,
-    elements = [],
-    { hashFunction = defaultHash, zeroElement = 0 } = {}
-  ) {
+  constructor(levels, elements = [], { hashFunction = defaultHash, zeroElement = 0 } = {}) {
     super()
     this.levels = levels
     if (elements.length > this.capacity) {

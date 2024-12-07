@@ -1,3 +1,3 @@
-import ModuleBuilder from "./module.js";
+import ModuleBuilder from "./module.js"
 
 export default ModuleBuilder

@@ -14,9 +14,7 @@ export function simpleHash(data, seed, hashLength = 40) {
     hval += (hval << 1) + (hval << 4) + (hval << 6) + (hval << 8) + (hval << 24)
   }
   const hash = (hval >>> 0).toString(16)
-  return BigInt(
-    "0x" + hash.padEnd(hashLength - (hash.length - 1), "0")
-  ).toString(10)
+  return BigInt("0x" + hash.padEnd(hashLength - (hash.length - 1), "0")).toString(10)
 }
 
 export default (left, right) => simpleHash([left, right])

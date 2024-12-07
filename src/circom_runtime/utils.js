@@ -17,57 +17,57 @@ limitations under the License.
 */
 
 export function flatArray(a) {
-    let res = [];
-    fillArray(res, a);
-    return res;
+  let res = []
+  fillArray(res, a)
+  return res
 
-    function fillArray(res, a) {
-        if (Array.isArray(a)) {
-            for (let i = 0; i < a.length; i++) {
-                fillArray(res, a[i]);
-            }
-        } else {
-            res.push(a);
-        }
+  function fillArray(res, a) {
+    if (Array.isArray(a)) {
+      for (let i = 0; i < a.length; i++) {
+        fillArray(res, a[i])
+      }
+    } else {
+      res.push(a)
     }
+  }
 }
 
 // Ref https://github.com/iden3/circom/commit/ec6388cf6eb62463539cb4c40cc3ceae9826de19
 export function normalize(n, prime) {
-    let res = BigInt(n) % prime;
-    if (res < 0) res += prime;
-    return res;
+  let res = BigInt(n) % prime
+  if (res < 0) res += prime
+  return res
 }
 
 export function fnvHash(str) {
-    const uint64_max = BigInt(2) ** BigInt(64);
-    let hash = BigInt("0xCBF29CE484222325");
-    for (let i = 0; i < str.length; i++) {
-        hash ^= BigInt(str[i].charCodeAt(0));
-        hash *= BigInt(0x100000001B3);
-        hash %= uint64_max;
-    }
-    let shash = hash.toString(16);
-    let n = 16 - shash.length;
-    shash = "0".repeat(n).concat(shash);
-    return shash;
+  const uint64_max = BigInt(2) ** BigInt(64)
+  let hash = BigInt("0xCBF29CE484222325")
+  for (let i = 0; i < str.length; i++) {
+    hash ^= BigInt(str[i].charCodeAt(0))
+    hash *= BigInt(0x100000001b3)
+    hash %= uint64_max
+  }
+  let shash = hash.toString(16)
+  let n = 16 - shash.length
+  shash = "0".repeat(n).concat(shash)
+  return shash
 }
 
 // Note that this pads zeros
 export function toArray32(s, size) {
-    const res = []; //new Uint32Array(size); //has no unshift
-    let rem = BigInt(s);
-    const radix = BigInt(0x100000000);
-    while (rem) {
-        res.unshift(Number(rem % radix));
-        rem = rem / radix;
+  const res = [] //new Uint32Array(size); //has no unshift
+  let rem = BigInt(s)
+  const radix = BigInt(0x100000000)
+  while (rem) {
+    res.unshift(Number(rem % radix))
+    rem = rem / radix
+  }
+  if (size) {
+    let i = size - res.length
+    while (i > 0) {
+      res.unshift(0)
+      i--
     }
-    if (size) {
-        let i = size - res.length;
-        while (i > 0) {
-            res.unshift(0);
-            i--;
-        }
-    }
-    return res;
+  }
+  return res
 }

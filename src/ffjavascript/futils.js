@@ -17,37 +17,35 @@
     snarkjs. If not, see <https://www.gnu.org/licenses/>.
 */
 
-import * as Scalar from "./scalar.js";
+import * as Scalar from "./scalar.js"
 
 export function mulScalar(F, base, e) {
-    let res;
+  let res
 
-    if (Scalar.isZero(e)) return F.zero;
+  if (Scalar.isZero(e)) return F.zero
 
-    const n = Scalar.naf(e);
+  const n = Scalar.naf(e)
 
-    if (n[n.length-1] == 1) {
-        res = base;
-    } else if (n[n.length-1] == -1) {
-        res = F.neg(base);
-    } else {
-        throw new Error("invlaud NAF");
+  if (n[n.length - 1] == 1) {
+    res = base
+  } else if (n[n.length - 1] == -1) {
+    res = F.neg(base)
+  } else {
+    throw new Error("invlaud NAF")
+  }
+
+  for (let i = n.length - 2; i >= 0; i--) {
+    res = F.double(res)
+
+    if (n[i] == 1) {
+      res = F.add(res, base)
+    } else if (n[i] == -1) {
+      res = F.sub(res, base)
     }
+  }
 
-    for (let i=n.length-2; i>=0; i--) {
-
-        res = F.double(res);
-
-        if (n[i] == 1) {
-            res = F.add(res, base);
-        } else if (n[i] == -1) {
-            res = F.sub(res, base);
-        }
-    }
-
-    return res;
+  return res
 }
-
 
 /*
 exports.mulScalar = (F, base, e) =>{
@@ -67,24 +65,22 @@ exports.mulScalar = (F, base, e) =>{
 };
 */
 
-
 export function exp(F, base, e) {
-    if (Scalar.isZero(e)) return F.one;
+  if (Scalar.isZero(e)) return F.one
 
-    const n = Scalar.bits(e);
+  const n = Scalar.bits(e)
 
-    if (n.length==0) return F.one;
+  if (n.length == 0) return F.one
 
-    let res = base;
+  let res = base
 
-    for (let i=n.length-2; i>=0; i--) {
+  for (let i = n.length - 2; i >= 0; i--) {
+    res = F.square(res)
 
-        res = F.square(res);
-
-        if (n[i]) {
-            res = F.mul(res, base);
-        }
+    if (n[i]) {
+      res = F.mul(res, base)
     }
+  }
 
-    return res;
+  return res
 }

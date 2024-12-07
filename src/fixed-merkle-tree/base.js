@@ -88,12 +88,7 @@ export default class BaseTree {
    * @param element Updated element value
    */
   update(index, element) {
-    if (
-      isNaN(Number(index)) ||
-      index < 0 ||
-      index > this._layers[0].length ||
-      index >= this.capacity
-    ) {
+    if (isNaN(Number(index)) || index < 0 || index > this._layers[0].length || index >= this.capacity) {
       throw new Error("Insert index out of bounds: " + index)
     }
     this._layers[0][index] = element
@@ -150,10 +145,7 @@ export default class BaseTree {
     for (let i = starFrom; i >= 0; i -= 2) {
       if (nodes[i - 1] === undefined) break
       const left = nodes[i - 1]
-      const right =
-        i === starFrom && length % 2 === 1
-          ? this._zeros[layerIndex - 1]
-          : nodes[i]
+      const right = i === starFrom && length % 2 === 1 ? this._zeros[layerIndex - 1] : nodes[i]
       currentLayer[currentLength - j] = this._hashFn(left, right)
       j++
     }
@@ -165,9 +157,7 @@ export default class BaseTree {
       index >>= 1
       const left = this._layers[level - 1][index * 2]
       const right =
-        index * 2 + 1 < this._layers[level - 1].length
-          ? this._layers[level - 1][index * 2 + 1]
-          : this._zeros[level - 1]
+        index * 2 + 1 < this._layers[level - 1].length ? this._layers[level - 1][index * 2 + 1] : this._zeros[level - 1]
       this._layers[level][index] = this._hashFn(left, right)
     }
   }

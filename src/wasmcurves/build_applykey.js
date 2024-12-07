@@ -18,61 +18,42 @@
 */
 
 export default function buildApplyKey(module, fnName, gPrefix, frPrefix, sizeGIn, sizeGOut, sizeF, opGtimesF) {
+  const f = module.addFunction(fnName)
+  f.addParam("pIn", "i32")
+  f.addParam("n", "i32")
+  f.addParam("pFirst", "i32")
+  f.addParam("pInc", "i32")
+  f.addParam("pOut", "i32")
+  f.addLocal("pOldFree", "i32")
+  f.addLocal("i", "i32")
+  f.addLocal("pFrom", "i32")
+  f.addLocal("pTo", "i32")
 
-    const f = module.addFunction(fnName);
-    f.addParam("pIn", "i32");
-    f.addParam("n", "i32");
-    f.addParam("pFirst", "i32");
-    f.addParam("pInc", "i32");
-    f.addParam("pOut", "i32");
-    f.addLocal("pOldFree", "i32");
-    f.addLocal("i", "i32");
-    f.addLocal("pFrom", "i32");
-    f.addLocal("pTo", "i32");
+  const c = f.getCodeBuilder()
 
-    const c = f.getCodeBuilder();
+  const t = c.i32_const(module.alloc(sizeF))
 
-    const t = c.i32_const(module.alloc(sizeF));
+  f.addCode(c.setLocal("pFrom", c.getLocal("pIn")), c.setLocal("pTo", c.getLocal("pOut")))
 
-    f.addCode(
-        c.setLocal("pFrom", c.getLocal("pIn")),
-        c.setLocal("pTo", c.getLocal("pOut")),
-    );
+  // t = first
+  f.addCode(c.call(frPrefix + "_copy", c.getLocal("pFirst"), t))
+  f.addCode(
+    c.setLocal("i", c.i32_const(0)),
+    c.block(
+      c.loop(
+        c.br_if(1, c.i32_eq(c.getLocal("i"), c.getLocal("n"))),
 
-    // t = first
-    f.addCode(
-        c.call(
-            frPrefix + "_copy",
-            c.getLocal("pFirst"),
-            t
-        )
-    );
-    f.addCode(
-        c.setLocal("i", c.i32_const(0)),
-        c.block(c.loop(
-            c.br_if(1, c.i32_eq ( c.getLocal("i"), c.getLocal("n") )),
+        c.call(opGtimesF, c.getLocal("pFrom"), t, c.getLocal("pTo")),
+        c.setLocal("pFrom", c.i32_add(c.getLocal("pFrom"), c.i32_const(sizeGIn))),
+        c.setLocal("pTo", c.i32_add(c.getLocal("pTo"), c.i32_const(sizeGOut))),
 
-            c.call(
-                opGtimesF,
-                c.getLocal("pFrom"),
-                t,
-                c.getLocal("pTo")
-            ),
-            c.setLocal("pFrom", c.i32_add(c.getLocal("pFrom"), c.i32_const(sizeGIn))),
-            c.setLocal("pTo", c.i32_add(c.getLocal("pTo"), c.i32_const(sizeGOut))),
+        // t = t* inc
+        c.call(frPrefix + "_mul", t, c.getLocal("pInc"), t),
+        c.setLocal("i", c.i32_add(c.getLocal("i"), c.i32_const(1))),
+        c.br(0)
+      )
+    )
+  )
 
-            // t = t* inc
-            c.call(
-                frPrefix + "_mul",
-                t,
-                c.getLocal("pInc"),
-                t
-            ),
-            c.setLocal("i", c.i32_add(c.getLocal("i"), c.i32_const(1))),
-            c.br(0)
-        ))
-    );
-
-    module.exportFunction(fnName);
-
-};
+  module.exportFunction(fnName)
+}

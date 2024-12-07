@@ -18,70 +18,46 @@
 */
 
 export default function buildTimesScalar(module, fnName, elementLen, opAB, opAA, opCopy, opInit) {
+  const f = module.addFunction(fnName)
+  f.addParam("base", "i32")
+  f.addParam("scalar", "i32")
+  f.addParam("scalarLength", "i32")
+  f.addParam("r", "i32")
+  f.addLocal("i", "i32")
+  f.addLocal("b", "i32")
 
-    const f = module.addFunction(fnName);
-    f.addParam("base", "i32");
-    f.addParam("scalar", "i32");
-    f.addParam("scalarLength", "i32");
-    f.addParam("r", "i32");
-    f.addLocal("i", "i32");
-    f.addLocal("b", "i32");
+  const c = f.getCodeBuilder()
 
-    const c = f.getCodeBuilder();
+  const aux = c.i32_const(module.alloc(elementLen))
 
-    const aux = c.i32_const(module.alloc(elementLen));
-
-    f.addCode(
-        c.if(
-            c.i32_eqz(c.getLocal("scalarLength")),
-            [
-                ...c.call(opInit, c.getLocal("r")),
-                ...c.ret([])
-            ]
-        )
-    );
-    f.addCode(c.call(opCopy, c.getLocal("base"), aux));
-    f.addCode(c.call(opInit, c.getLocal("r")));
-    f.addCode(c.setLocal("i", c.getLocal("scalarLength")));
-    f.addCode(c.block(c.loop(
+  f.addCode(c.if(c.i32_eqz(c.getLocal("scalarLength")), [...c.call(opInit, c.getLocal("r")), ...c.ret([])]))
+  f.addCode(c.call(opCopy, c.getLocal("base"), aux))
+  f.addCode(c.call(opInit, c.getLocal("r")))
+  f.addCode(c.setLocal("i", c.getLocal("scalarLength")))
+  f.addCode(
+    c.block(
+      c.loop(
         c.setLocal("i", c.i32_sub(c.getLocal("i"), c.i32_const(1))),
 
-        c.setLocal(
-            "b",
-            c.i32_load8_u(
-                c.i32_add(
-                    c.getLocal("scalar"),
-                    c.getLocal("i")
-                )
-            )
-        ),
+        c.setLocal("b", c.i32_load8_u(c.i32_add(c.getLocal("scalar"), c.getLocal("i")))),
         ...innerLoop(),
-        c.br_if(1, c.i32_eqz ( c.getLocal("i") )),
+        c.br_if(1, c.i32_eqz(c.getLocal("i"))),
         c.br(0)
-    )));
+      )
+    )
+  )
 
-
-    function innerLoop() {
-        const code = [];
-        for (let i=0; i<8; i++) {
-            code.push(
-                ...c.call(opAA, c.getLocal("r"), c.getLocal("r")),
-                ...c.if(
-                    c.i32_ge_u( c.getLocal("b"), c.i32_const(0x80 >> i)),
-                    [
-                        ...c.setLocal(
-                            "b",
-                            c.i32_sub(
-                                c.getLocal("b"),
-                                c.i32_const(0x80 >> i)
-                            )
-                        ),
-                        ...c.call(opAB, c.getLocal("r"),aux, c.getLocal("r"))
-                    ]
-                )
-            );
-        }
-        return code;
+  function innerLoop() {
+    const code = []
+    for (let i = 0; i < 8; i++) {
+      code.push(
+        ...c.call(opAA, c.getLocal("r"), c.getLocal("r")),
+        ...c.if(c.i32_ge_u(c.getLocal("b"), c.i32_const(0x80 >> i)), [
+          ...c.setLocal("b", c.i32_sub(c.getLocal("b"), c.i32_const(0x80 >> i))),
+          ...c.call(opAB, c.getLocal("r"), aux, c.getLocal("r"))
+        ])
+      )
     }
-
-};
+    return code
+  }
+}

@@ -1,5 +1,5 @@
-export {default as MerkleTree} from "./fixed-merkle-tree/index.js"
+export { default as MerkleTree } from "./fixed-merkle-tree/index.js"
 export { stringifyBigInts } from "./ffjavascript/index.js"
 export { hex } from "./utils.js"
-export  {buildPoseidon} from "./circomlibjs/index.js"
-export {groth16FullProve } from "./snarkjs/index.js"
+export { buildPoseidon } from "./circomlibjs/index.js"
+export { groth16FullProve } from "./snarkjs/index.js"

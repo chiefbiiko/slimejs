@@ -18,11 +18,11 @@
 */
 
 export function bigInt2BytesLE(_a, len) {
-    const b = Array(len);
-    let v = BigInt(_a);
-    for (let i=0; i<len; i++) {
-        b[i] = Number(v & 0xFFn);
-        v = v >> 8n;
-    }
-    return b;
-};
+  const b = Array(len)
+  let v = BigInt(_a)
+  for (let i = 0; i < len; i++) {
+    b[i] = Number(v & 0xffn)
+    v = v >> 8n
+  }
+  return b
+}
