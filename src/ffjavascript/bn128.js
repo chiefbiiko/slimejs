@@ -3,10 +3,10 @@ import ModuleBuilder from "../wasmbuilder/index.js"
 import buildEngine from "./engine.js"
 import * as Scalar from "./scalar.js"
 
-globalThis.curve_bn128 = null
+// globalThis.curve_bn128 = null
 
 export default async function buildBn128(singleThread, plugins) {
-  if (!singleThread && globalThis.curve_bn128) return globalThis.curve_bn128
+//   if (!singleThread && globalThis.curve_bn128) return globalThis.curve_bn128
 
   const moduleBuilder = new ModuleBuilder()
   moduleBuilder.setMemory(25)
@@ -47,13 +47,13 @@ export default async function buildBn128(singleThread, plugins) {
   const curve = await buildEngine(params)
   curve.terminate = async function () {
     if (!params.singleThread) {
-      globalThis.curve_bn128 = null
+    //   globalThis.curve_bn128 = null
       await this.tm.terminate()
     }
   }
 
   if (!singleThread) {
-    globalThis.curve_bn128 = curve
+    // globalThis.curve_bn128 = curve
   }
 
   return curve
