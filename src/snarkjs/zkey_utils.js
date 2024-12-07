@@ -44,13 +44,8 @@
 // PointsH(9)
 // Contributions(10)
 
-// import { Scalar, F1Field } from "ffjavascript";
 import {log2,  Scalar, F1Field,  getCurveFromQ as getCurve } from "../ffjavascript/index.js"
-// import * as binFileUtils from "@iden3/binfileutils";
 import * as binFileUtils from "../binfileutils/index.js";
-
-// import { getCurveFromQ as getCurve } from "./curves.js";
-// import { log2 } from "./misc.js";
 import {FFLONK_PROTOCOL_ID, GROTH16_PROTOCOL_ID, PLONK_PROTOCOL_ID} from "./zkey_constants.js";
 import {ZKEY_FF_HEADER_SECTION} from "./fflonk_constants.js";
 

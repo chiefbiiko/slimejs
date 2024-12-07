@@ -1,9 +1,5 @@
-// const assert = require("assert");
-// import assert from "assert"
 import { assert } from "chai"
-// const buildBn128 = require("../src/wasmcurves/build_bn128_wasm.js");
 import buildBn128 from "../src/wasmcurves/build_bn128_wasm.js"
-// const buildProtoboard = require("wasmbuilder").buildProtoboard;
 import { buildProtoboard } from "wasmbuilder"
 
 // Basic tests for g1 in bn128

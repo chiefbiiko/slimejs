@@ -1,4 +1,3 @@
-
 export default function buildPairing(curve) {
     const tm = curve.tm;
     curve.pairing = function pairing(a, b) {

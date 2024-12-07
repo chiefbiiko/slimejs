@@ -4,7 +4,6 @@ import path from "path";
 // NOTE: using the original snarkjs here because this suite should only test circom_runtime's wtns calc builder
 import * as snarkjs from "snarkjs";
 import {WitnessCalculatorBuilder} from "../src/circom_runtime/index.js";
-// import * as fastFile from "fastfile";
 // NOTE: using the original fastfile here because our refactored version does only support mem files
 import * as fastFile from "fastfile";
 

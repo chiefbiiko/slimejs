@@ -1,6 +1,5 @@
 
 import poseidonConstants from "./poseidon_constants_opt.js";
-
 import { getCurveFromName, Scalar, F1Field } from "../ffjavascript/index.js";
 
 export default async function buildPoseidon() {

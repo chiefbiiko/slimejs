@@ -1,5 +1,4 @@
 import ChaCha from "./chacha.js";
-// import crypto from "crypto";
 
 export function getRandomBytes(n) {
     let array = new Uint8Array(n);

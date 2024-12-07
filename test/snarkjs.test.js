@@ -1,7 +1,7 @@
 import fs from "fs/promises"
 import path from "path";
 import {assert} from "chai";
-import { groth16FullProve} from "../src/snarkjs/index.js";
+import { groth16FullProve} from "../src/index.js";
 import { getCurveFromName } from "../src/ffjavascript/index.js";
 // NOTE: using the original snarkjs to verify our refactored groth16FullProve()
 import * as snarkjs from "snarkjs";

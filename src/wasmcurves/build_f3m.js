@@ -16,12 +16,10 @@
     You should have received a copy of the GNU General Public License
     along with wasmsnark. If not, see <https://www.gnu.org/licenses/>.
 */
-// const buildExp = require("./build_timesscalar");
+
 import buildExp from "./build_timesscalar.js"
-// const buildBatchInverse = require("./build_batchinverse");
 import buildBatchInverse from "./build_batchinverse.js"
 
-// module.exports = function buildF3m(module, mulNonResidueFn, prefix, f1mPrefix) {
 export default function buildF3m(module, mulNonResidueFn, prefix, f1mPrefix) {
 
     if (module.modules[prefix]) return prefix;  // already builded

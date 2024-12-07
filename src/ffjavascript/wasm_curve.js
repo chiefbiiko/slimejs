@@ -1,5 +1,3 @@
-
-
 import * as Scalar from "./scalar.js";
 import buildBatchConvert from "./engine_batchconvert.js";
 

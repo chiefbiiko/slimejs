@@ -1,11 +1,8 @@
-
-// import  { Scalar, BigBuffer } from "ffjavascript";
 import { Scalar, BigBuffer } from "../ffjavascript/index.js"
 import * as fastFile from "../fastfile/index.js";
 
-export async function readBinFile(fileName, type, maxVersion/*, cacheSize, pageSize*/) {
-
-    const fd = await fastFile.readExisting(fileName/*, cacheSize, pageSize*/);
+export async function readBinFile(fileName, type, maxVersion) {
+    const fd = await fastFile.readExisting(fileName);
 
     const b = await fd.read(4);
     let readedType = "";
@@ -35,9 +32,8 @@ export async function readBinFile(fileName, type, maxVersion/*, cacheSize, pageS
     return {fd, sections};
 }
 
-export async function createBinFile(fileName, type, version, nSections/*, cacheSize, pageSize*/) {
-
-    const fd = await fastFile.createOverride(fileName/*, cacheSize, pageSize*/);
+export async function createBinFile(fileName, type, version, nSections) {
+    const fd = await fastFile.createOverride(fileName);
 
     const buff = new Uint8Array(4);
     for (let i=0; i<4; i++) buff[i] = type.charCodeAt(i);
@@ -116,7 +112,6 @@ export async function copySection(fdFrom, sections, fdTo, sectionId, size) {
 }
 
 export async function readSection(fd, sections, idSection, offset, length) {
-
     offset = (typeof offset === "undefined") ? 0 : offset;
     length = (typeof length === "undefined") ? sections[idSection][0].size - offset : length;
 

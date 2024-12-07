@@ -17,14 +17,10 @@
     along with snarkJS. If not, see <https://www.gnu.org/licenses/>.
 */
 
-// import { Scalar } from "ffjavascript";
 import { Scalar } from "../ffjavascript/index.js"
-
-// import * as binFileUtils from "@iden3/binfileutils";
 import * as binFileUtils from "../binfileutils/index.js";
 
 export async function write(fd, witness, prime) {
-
     await binFileUtils.startWriteSection(fd, 1);
     const n8 = (Math.floor( (Scalar.bitLength(prime) - 1) / 64) +1)*8;
     await fd.writeULE32(n8);
@@ -37,12 +33,9 @@ export async function write(fd, witness, prime) {
         await binFileUtils.writeBigInt(fd, witness[i], n8);
     }
     await binFileUtils.endWriteSection(fd, 2);
-
-
 }
 
 export async function writeBin(fd, witnessBin, prime) {
-
     await binFileUtils.startWriteSection(fd, 1);
     const n8 = (Math.floor( (Scalar.bitLength(prime) - 1) / 64) +1)*8;
     await fd.writeULE32(n8);
@@ -53,15 +46,12 @@ export async function writeBin(fd, witnessBin, prime) {
     await fd.writeULE32(witnessBin.byteLength / n8);
     await binFileUtils.endWriteSection(fd);
 
-
     await binFileUtils.startWriteSection(fd, 2);
     await fd.write(witnessBin);
     await binFileUtils.endWriteSection(fd);
-
 }
 
 export async function readHeader(fd, sections) {
-
     await binFileUtils.startReadUniqueSection(fd, sections, 1);
     const n8 = await fd.readULE32();
     const q = await binFileUtils.readBigInt(fd, n8);
@@ -69,11 +59,9 @@ export async function readHeader(fd, sections) {
     await binFileUtils.endReadSection(fd);
 
     return {n8, q, nWitness};
-
 }
 
 export async function read(fileName) {
-
     const {fd, sections} = await binFileUtils.readBinFile(fileName, "wtns", 2);
 
     const {n8, nWitness} = await readHeader(fd, sections);

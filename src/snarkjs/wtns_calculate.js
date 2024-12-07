@@ -17,15 +17,10 @@
     along with snarkJS. If not, see <https://www.gnu.org/licenses/>.
 */
 
-// import * as binFileUtils from "@iden3/binfileutils";
 import * as binFileUtils from "../binfileutils/index.js";
-// import {  utils }   from "ffjavascript";
-// const { unstringifyBigInts} = utils;
 import { unstringifyBigInts } from "../ffjavascript/index.js";
-// import * as fastFile from "fastfile";
 import * as fastFile from "../fastfile/index.js";
 import { WitnessCalculatorBuilder } from "../circom_runtime/index.js";
-// import * as wtnsUtils from "./wtns_utils.js";
 import * as wtnsUtils from "./wtns_utils.js";
 
 export default async function wtnsCalculate(_input, wasmFileName, wtnsFileName, options) {

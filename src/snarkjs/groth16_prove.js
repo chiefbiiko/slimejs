@@ -17,15 +17,10 @@
     along with snarkJS. If not, see <https://www.gnu.org/licenses/>.
 */
 
-// import * as binFileUtils from "@iden3/binfileutils";
 import * as binFileUtils from "../binfileutils/index.js";
 import {log2, stringifyBigInts, Scalar, BigBuffer } from "../ffjavascript/index.js"
 import * as zkeyUtils from "./zkey_utils.js";
 import * as wtnsUtils from "./wtns_utils.js";
-// import { getCurveFromQ as getCurve } from "./curves.js";
-// import { log2 } from "./misc.js";
-// import { Scalar, utils, BigBuffer } from "ffjavascript";
-// const {stringifyBigInts} = utils;
 
 export default async function groth16Prove(zkeyFileName, witnessFileName, logger, options) {
     const {fd: fdWtns, sections: sectionsWtns} = await binFileUtils.readBinFile(witnessFileName, "wtns", 2, 1<<25, 1<<23);

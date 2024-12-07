@@ -18,7 +18,6 @@
 */
 
 import FunctionBuilder  from "./function.js";
-// import * as utils from "./utils.js";
 import { varint32, varuint32, str, u32, toHexString } from "./utils.js"
 
 export default class ModuleBuilder {

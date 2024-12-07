@@ -7,17 +7,6 @@ import buildBn128 from "../src/ffjavascript/bn128.js"
 import {log2} from "../src/ffjavascript/utils.js"
 import BigBuffer from "../src/ffjavascript/bigbuffer.js";
 import ZqField from "../src/ffjavascript/f1field.js";
-// import * as chai from "chai";
-// import buildBn128 from "../src/bn128.js";
-// import {log2} from "../src/utils.js";
-// import BigBuffer from "../src/bigbuffer.js";
-
-// const assert = chai.assert;
-
-// import ZqField from "../src/f1field.js";
-// import * as Scalar from "../src/scalar.js";
-// import * as chai from "chai";
-// const assert = chai.assert;
 
 const { ethers } = hardhat
 const { BigNumber } = ethers

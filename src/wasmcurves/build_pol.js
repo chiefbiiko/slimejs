@@ -17,7 +17,6 @@
     along with wasmsnark. If not, see <https://www.gnu.org/licenses/>.
 */
 
-// module.exports = function buildPol(module, prefix, prefixField) {
 export default function buildPol(module, prefix, prefixField) {
 
     const n64 = module.modules[prefixField].n64;

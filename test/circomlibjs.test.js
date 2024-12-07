@@ -1,11 +1,4 @@
-// import chai from "chai";
-// const assert = chai.assert;
 import {  assert } from "chai"
-
-// import buildPoseidonOpt from "../src/poseidon_opt.js";
-// import buildPoseidonOpt from "circomlibjs"
-// import {buildPoseidon as buildPoseidonWasm } from "../src/poseidon_wasm.js";
-// import buildPoseidonReference from "../src/poseidon_reference.js";
 // NOTE: importing the ref and opt impl from circomlibjs for reference tests
 import {buildPoseidonReference, buildPoseidonOpt} from "circomlibjs"
 import {buildPoseidon as buildPoseidonWasm } from "../src/index.js";

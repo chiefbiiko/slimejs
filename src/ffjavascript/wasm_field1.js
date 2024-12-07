@@ -1,5 +1,4 @@
 import * as Scalar from "./scalar.js";
-// import * as utils from "./utils.js";
 import { leInt2Buff, array2buffer, buffer2array } from "./utils.js";
 import { getThreadRng } from "./random.js";
 import buildBatchConvert from "./engine_batchconvert.js";

@@ -1,28 +1,16 @@
-// const utils = require("./utils.js");
 import { bigInt2BytesLE } from "./utils.js"
 
-// const buildF1m =require("./build_f1m.js");
 import buildF1m from "./build_f1m.js";
-// const buildF1 =require("./build_f1.js");
 import buildF1 from "./build_f1.js";
-// const buildF2m =require("./build_f2m.js");
 import buildF2m from "./build_f2m.js"
-// const buildF3m =require("./build_f3m.js");
 import buildF3m from "./build_f3m.js";
-// const buildCurve =require("./build_curve_jacobian_a0.js");
 import buildCurve from "./build_curve_jacobian_a0.js"
-// const buildFFT = require("./build_fft");
 import buildFFT from "./build_fft.js";
-// const buildPol = require("./build_pol");
 import buildPol from "./build_pol.js";
-// const buildQAP = require("./build_qap");
 import buildQAP from "./build_qap.js";
-// const buildApplyKey = require("./build_applykey");
 import buildApplyKey from "./build_applykey.js";
-// const { bitLength, modInv, isOdd, isNegative } = require("./bigint.js");
 import { bitLength, modInv, isOdd, isNegative } from "./bigint.js"
 
-// module.exports = function buildBn128Wasm(module, _prefix) {
 export default function buildBn128Wasm(module, _prefix) {
 
     const prefix = _prefix || "bn128";

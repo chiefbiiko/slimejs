@@ -18,8 +18,7 @@ limitations under the License.
 */
 
 import {flatArray, fnvHash, toArray32, normalize} from "./utils.js";
-// import {Scalar, F1Field} from "ffjavascript";
-import {/*F1Field,*/ Scalar } from "../ffjavascript/index.js"
+import { Scalar } from "../ffjavascript/index.js"
 
 export default async function builder(code, options) {
     let instance;

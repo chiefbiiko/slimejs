@@ -17,7 +17,6 @@
     along with wasmbuilder. If not, see <https://www.gnu.org/licenses/>.
 */
 
-// import * as utils from "./utils.js";
 import { varint64, varint32, varuint32} from "./utils.js"
 
 export default class CodeBuilder {

@@ -1,4 +1,3 @@
-// import { buildBn128 as buildBn128wasm } from "wasmcurves";
 import {buildBn128Wasm} from "../wasmcurves/index.js"
 import ModuleBuilder from "../wasmbuilder/index.js";
 import buildEngine from "./engine.js";

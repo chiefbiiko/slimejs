@@ -18,7 +18,6 @@
 */
 
 import  CodeBuilder from "./code.js";
-// import * as utils from "./utils.js";
 import { varuint32} from "./utils.js"
 
 const typeCodes = {
@@ -30,7 +29,6 @@ const typeCodes = {
     "func": 0x60,
     "emptyblock": 0x40
 };
-
 
 export default class FunctionBuilder {
 

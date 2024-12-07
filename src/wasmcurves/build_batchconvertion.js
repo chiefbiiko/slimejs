@@ -1,9 +1,5 @@
-
-
-// module.exports = buildBatchConvertion;
-
-// function buildBatchConvertion(module, fnName, internalFnName, sizeIn, sizeOut, reverse) {
 export default function buildBatchConvertion(module, fnName, internalFnName, sizeIn, sizeOut, reverse) {
+  
     if (typeof reverse === "undefined") {
         // Set the reverse in a way that allows to use the same buffer as in/out.
         if (sizeIn < sizeOut) {

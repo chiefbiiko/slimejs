@@ -1,9 +1,4 @@
-
-// module.exports = buildBatchInverse;
-
-// function buildBatchInverse(module, prefix) {
 export default function buildBatchInverse(module, prefix) {
-
 
     const n8 = module.modules[prefix].n64*8;
 

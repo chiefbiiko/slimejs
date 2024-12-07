@@ -141,14 +141,3 @@ export function isPrime(p) {
     }
     return millerRabinTest(n, a);
 }
-
-// module.exports.bitLength = bitLength;
-// module.exports.isOdd = isOdd;
-// module.exports.isNegative = isNegative;
-// module.exports.abs = abs;
-// module.exports.isUnit = isUnit;
-// module.exports.compare = compare;
-// module.exports.modInv = modInv;
-// module.exports.modPow = modPow;
-// module.exports.isPrime = isPrime;
-// module.exports.square = square;

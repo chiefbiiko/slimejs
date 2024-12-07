@@ -1,12 +1,8 @@
-// import * as testUtils from "./testUtils.js";
 import * as fastFile from "../src/fastfile/index.js";
-
-// import assert from "assert";
 import * as chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 
 chai.use(chaiAsPromised);
-// const expect = chai.expect;
 const {  assert, expect }  = chai
 
 const testUtils = {

@@ -19,16 +19,11 @@
 
 import groth16_prove from "./groth16_prove.js";
 import wtns_calculate from "./wtns_calculate.js";
-// import {utils} from "ffjavascript";
-// const {unstringifyBigInts} = utils;
 import { unstringifyBigInts } from "../ffjavascript/index.js";
 
 export default async function groth16FullProve(_input, wasmFile, zkeyFileName, logger, wtnsCalcOptions, proverOptions) {
     const input = unstringifyBigInts(_input);
-
-    const wtns= {
-        type: "mem"
-    };
+    const wtns= {  type: "mem"  };
     await wtns_calculate(input, wasmFile, wtns, wtnsCalcOptions);
     return await groth16_prove(zkeyFileName, wtns, logger, proverOptions);
 }

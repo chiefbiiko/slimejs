@@ -17,12 +17,9 @@
     along with wasmsnark. If not, see <https://www.gnu.org/licenses/>.
 */
 
-// const buildF1m =require("./build_f1m.js");
 import buildF1m from "./build_f1m.js";
-// const { bitLength } = require("./bigint.js");
 import { bitLength } from "./bigint.js";
 
-// module.exports = function buildF1(module, _q, _prefix, _f1mPrefix, _intPrefix) {
 export default function buildF1(module, _q, _prefix, _f1mPrefix, _intPrefix) {
 
     const q = BigInt(_q);
