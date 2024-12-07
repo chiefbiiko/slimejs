@@ -1,13 +1,19 @@
-# Sample Hardhat Project
+# browser-bermuda
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
+Bermuda SDK core core w/o any node deps for full browser compat
 
-Try running some of the following tasks:
+`npm install`
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.js
+`npm test`
+
+`npm run fmt`
+
+```js
+export {
+    MerkleTree,
+    groth16FullProve,
+    buildPoseidon,
+    stringifyBigInts,
+    hex
+}
 ```

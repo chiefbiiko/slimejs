@@ -1,1 +1,0 @@
-//https://github.com/iden3/circomlibjs/blob/bfa4ce13661e747e82ed74d1114659e354c1b60b/src/poseidon_wasm.js#L6
