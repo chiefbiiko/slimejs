@@ -5,7 +5,6 @@ import { groth16FullProve} from "../src/index.js";
 import { getCurveFromName } from "../src/ffjavascript/index.js";
 // NOTE: using the original snarkjs to verify our refactored groth16FullProve()
 import * as snarkjs from "snarkjs";
-import vKey from "./circuit/verification_key.json" with { type: 'json' }
 
 describe("snarkjs", function ()  {
     this.timeout(3000);
@@ -20,21 +19,18 @@ describe("snarkjs", function ()  {
     let proof;
     let publicSignals;
     let publicSignalsWithAlias;
+    let vkey
 
     before( async () => {
         curve = await getCurveFromName("bn128");
         // curve.Fr.s = 10;
-        // monkey patch fetch because the nodejs impl is a noop 4now
+        // monkey patch fetch because the nodejs impl is a noop 4now (at least for file://)
         globalThis.fetch = async function fetchFromFs(input) {
             const url = new URL(input);
             const buf = await fs.readFile(url)
             return new Response(buf)
         }
-    });
-    after( async () => {
-        await curve.terminate();
-        // console.log(process._getActiveHandles());
-        // console.log(process._getActiveRequests());
+        vkey = await fetch("file://" +  path.resolve("test", "circuit", "vkey.json")).then(r => r.json())
     });
 
     it ("groth16 proof singleThreaded", async () => {
@@ -47,10 +43,10 @@ const res = await groth16FullProve(input, wasmFile, zkeyFileName, console, wtnsC
     });
 
     it("groth16 verify (proof singleThreaded)", async () => {
-        const res = await snarkjs.groth16.verify(vKey, publicSignals, proof);
+        const res = await snarkjs.groth16.verify(vkey, publicSignals, proof);
         assert(res === true);
 
-        const res2 = await snarkjs.groth16.verify(vKey, publicSignalsWithAlias, proof);
+        const res2 = await snarkjs.groth16.verify(vkey, publicSignalsWithAlias, proof);
         assert(res2 === false);
     });
 });

@@ -11,7 +11,7 @@ describe("circom_runtime", function () {
     describe("wtnscalc", function () {
         const wasmFilename = path.join("test", "circuit", "circuit_js", "circuit.wasm");
         const zkeyFilename = path.join("test", "circuit", "circuit.zkey");
-        const vkeyFilename = path.join("test", "circuit", "verification_key.json");
+        const vkeyFilename = path.join("test", "circuit", "vkey.json");
         const input = {
             "a": 1,
             "b": 2,
