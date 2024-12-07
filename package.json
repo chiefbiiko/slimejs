@@ -1,10 +1,10 @@
 {
-    "name": "bropro",
+    "name": "slimejs",
     "version": "0.0.0",
-    "description": "Browser-based ZK proving à la circomlibjs snarkjs",
+    "description": "Browser-first refactor of core circom snarkjs libs",
     "main": "src/index.js",
     "author": "",
-    "license": "MIT",
+    "license": "GPL-3.0 & ISC",
     "type": "module",
     "scripts": {
         "test": "hardhat test",
