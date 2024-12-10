@@ -1,7 +1,7 @@
 {
     "name": "slimejs",
     "version": "0.0.0",
-    "description": "Browser-first refactor of core circom snarkjs libs",
+    "description": "circom+snarkjs libs w/o any node deps for full browser compat",
     "main": "src/index.js",
     "author": "",
     "license": "GPL-3.0 & ISC",
