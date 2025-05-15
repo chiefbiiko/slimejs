@@ -39,3 +39,5 @@ Fork points:
 | [`snarkjs`](https://github.com/iden3/snarkjs/tree/d90fa782d1098e5083241ffc152206d9894550b7) | `0.7.5` | `d90fa782d1098e5083241ffc152206d9894550b7`
 | [`wasmbuilder`](https://github.com/iden3/wasmbuilder/tree/91cbdcbc62f9c440293b3f58c80d3d2295b4500b) | `0.0.16` | `91cbdcbc62f9c440293b3f58c80d3d2295b4500b` |
 | [`wasmcurves`](https://github.com/iden3/wasmcurves/tree/8330a41e908ec296b0b216d7a8c439c0e3f4de6c) | `0.2.2` | `8330a41e908ec296b0b216d7a8c439c0e3f4de6c` |
+
+All credit to Jordi Baylina, Blaine Bublitz, Oleksandr Brezhniev and Co!
